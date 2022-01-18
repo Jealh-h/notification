@@ -1,0 +1,21 @@
+.title {
+    font-weight: bolder;
+    color: #f5bd00;
+}
+body {
+    margin:0;
+}
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 1px;
+}
+*::-webkit-scrollbar-button {
+    display: none;
+}
+*::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #9f9f9f;
+}
+*::-webkit-scrollbar-corner {
+
+}

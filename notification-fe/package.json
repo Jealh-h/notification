@@ -1,0 +1,38 @@
+{
+  "name": "notification",
+  "version": "1.0.0",
+  "description": "通知你还有事情没有做",
+  "author": "jealh",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "babel-loader": "^8.2.3",
+    "css-loader": "^6.5.1",
+    "express": "^4.17.1",
+    "html-webpack-plugin": "^5.5.0",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
+    "prop-types": "^15.7.2",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.64.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-middleware": "^5.2.2",
+    "webpack-hot-middleware": "^2.25.1",
+    "webpack-manifest-plugin": "^4.0.2"
+  },
+  "scripts": {
+    "test": "echo 'Error no script to run' && exit 1",
+    "build": "node scripts/build.js",
+    "start": "node scripts/start.js",
+    "watch": "node scripts/watch.js"
+  },
+  "dependencies": {
+    "@babel/preset-react": "^7.16.0",
+    "@douyinfe/semi-ui": "^2.0.8",
+    "axios": "^0.24.0",
+    "chalk": "^4.1.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}

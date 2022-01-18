@@ -1,0 +1,19 @@
+.header-nav {
+    height: 48px;
+    line-height: 48px;
+    border-bottom: 1px solid #9f9f9f;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    vertical-align: middle;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+}
+.header-title {
+    margin-left: 100px;
+    font-weight:bolder;
+    font-size: 1.5em;
+    color: #000;
+}

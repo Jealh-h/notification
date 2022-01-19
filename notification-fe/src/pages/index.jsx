@@ -194,12 +194,15 @@ class Main extends React.Component {
     // }
     this.context.toggleVisible();
   };
+  test = () => {
+    console.log(document.cookie);
+  };
   render() {
     let contextValue = this.context;
     return (
       <>
         <Header
-          title="每日英语"
+          title={<Button onClick={this.test}>测试</Button>}
           extral={
             <CoButton
               type="primary"
@@ -290,7 +293,7 @@ class Main extends React.Component {
             style={{ textAlign: "center" }}
           >
             <div className="gh-login-entry">
-              <a href="http://localhost:3003/gh-login">
+              <a href="http://localhost:3003/api/users/gh-login">
                 <IconGithubLogo size="extra-large" />
               </a>
             </div>

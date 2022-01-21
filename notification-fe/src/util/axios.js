@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { Notification } from '@douyinfe/semi-ui';
-const instance = axios.create();
+const instance = axios.create({
+    withCredentials: true,
+});
 instance.interceptors.request.use((requestConfig) => {
+    console.log("---requestConfig---", requestConfig);
     // do something before request
     return requestConfig;
 }, (error) => {
@@ -11,6 +14,7 @@ instance.interceptors.request.use((requestConfig) => {
     // })
 });
 instance.interceptors.response.use((axiosResponse) => {
+    console.log("----axiosResponse---", axiosResponse);
     return axiosResponse;
 }, (error) => {
     Notification.error({

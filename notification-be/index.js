@@ -15,11 +15,23 @@ var app = express();
 app.all('*', (req, res, next) => {
     res.set({
         "content-type": "text/plain",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "http://localhost:4000",
+        "Access-Control-Allow-Credentials": true
     });
     next();
 })
-app.use('/api/users', userRouter);
+app.all('/api', (req, res, next) => {
+    // 对api路径下的接口进行token验证
+    next();
+})
+app.use('/api/test', (req, res, next) => {
+    res.end('express test');
+})
+app.use('/cookie', (req, res, next) => {
+    res.cookie('cookieTest', "123456");
+    res.end('set-cookie success')
+})
+app.use('/api/user', userRouter);
 // 处理404
 app.use(function (req, res, next) {
     res.set('status', '404');

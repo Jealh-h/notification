@@ -81,6 +81,7 @@ class Main extends React.Component {
   }
   componentDidMount() {
     Notification.info({ ...this.opt });
+    console.log("---componentName---", this.name, this.displayName, this);
     // TODO
     // 请求数据
   }
@@ -195,14 +196,18 @@ class Main extends React.Component {
     this.context.toggleVisible();
   };
   test = () => {
-    console.log(document.cookie);
+    // console.log(document.cookie);
+    // this.props.getUserInfo();
+    this.props.user.logOut();
   };
   render() {
     let contextValue = this.context;
     return (
       <>
         <Header
-          title={<Button onClick={this.test}>测试</Button>}
+          title={
+            <Button onClick={this.test}>测试{this.props.user.data.id}</Button>
+          }
           extral={
             <CoButton
               type="primary"
@@ -293,7 +298,7 @@ class Main extends React.Component {
             style={{ textAlign: "center" }}
           >
             <div className="gh-login-entry">
-              <a href="http://localhost:3003/api/users/gh-login">
+              <a href="http://localhost:3003/api/user/gh-login">
                 <IconGithubLogo size="extra-large" />
               </a>
             </div>
@@ -314,4 +319,10 @@ class Main extends React.Component {
     );
   }
 }
-export default connect(upDateTaskList)(Main);
+function mapModel(store) {
+  return {
+    task: store.TaskModel,
+    user: store.UserModel,
+  };
+}
+export default connect(mapModel)(Main);

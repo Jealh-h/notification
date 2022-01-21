@@ -55,7 +55,8 @@ class NoteEditor extends React.Component {
       Notification.error({ content: "请校验表单内容" });
       return;
     }
-    this.props.addNotification(values);
+    // TODO
+    // this.props.addNotification(values);
     // 关闭编辑框
     this.context.toggleVisible();
     // 修改状态为可以更新状态
@@ -175,4 +176,4 @@ NoteEditor.propTypes = {
   addNotification: PropTypes.func,
   upDate: PropTypes.func,
 };
-export default connect({ ...notification })(NoteEditor);
+export default NoteEditor;

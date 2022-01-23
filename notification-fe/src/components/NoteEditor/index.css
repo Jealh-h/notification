@@ -1,10 +1,15 @@
 .editor-toolbar {
-    width: auto;
-    height: 36px;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-    margin-right: 32px;
-    box-shadow: 0 0px 4px -1px #dfdfdf;
-    border-radius: 5px;
+  width: auto;
+  height: 36px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0px 4px -1px #dfdfdf;
+  border-radius: 5px;
+}
+.semi-form-horizontal .semi-form-field:last-child {
+  margin-right: 0;
+}
+.semi-form-horizontal .semi-form-field {
+  padding-right: 0;
 }

@@ -7,23 +7,26 @@ const userDao = new UserDAO();
 const taskDao = new TaskDAO();
 const github = require('../configs/OAuth-github');
 const frontConfig = require('../configs/urlConfig');
+const constName = require('../configs/constans');
 const axios = require('axios');
+const utils = require('../utils/util');
 
+// github登录时走一遍注册流程
 async function signIn(userInfoResponse) {
     // 查看数据库，如果没有则创建该用户的信息
     let result = await userDao.findOne({ 'id': userInfoResponse["data"]["id"] })
-    console.log("findOneresult----:", result);
+    let userinfo = {
+        "login": userInfoResponse["data"]["login"],
+        "name": userInfoResponse["data"]["name"],
+        "id": userInfoResponse["data"]["id"],
+        "avatar_url": userInfoResponse["data"]["avatar_url"],
+    };
     if (!result) {
         // 数据库里面没有该用户
         // 写入用户信息
-        let userinfo = {
-            "login": userInfoResponse["data"]["login"],
-            "name": userInfoResponse["data"]["name"],
-            "id": userInfoResponse["data"]["id"],
-            "avatar_url": userInfoResponse["data"]["avatar_url"],
-        };
         userDao.create(userinfo);
     }
+    return userinfo;
 }
 router.get('/gh-login', function (req, res) {
     res.redirect(github.oauth_url + "?client_id=" + github.client_id + `&scope=${github.scope}` + `&redirect_uri=${github.readirect_uri}`);
@@ -68,9 +71,10 @@ router.get('/github/oauth/callback', async function (req, res, next) {
                 console.log(error.request);
             }
         })
-        await signIn(userInfoResponse);
+        let userInfo = await signIn(userInfoResponse);
         // 设置cookie其中包含用户信息
-        res.cookie('userid', userInfoResponse["data"]["id"], { maxAge: 604800, httpOnly: true });
+        res.cookie(constName.USER_ID, userInfoResponse["data"]["id"], { expires: new Date(Date.now() + 7 * 24 * 3600000), httpOnly: true })
+            .cookie(constName.ACCESS_TOKEM, "Bearer " + utils.getToken(userInfo), { expires: new Date(Date.now() + 7 * 24 * 3600000) })
         res.status(200);
         res.redirect(urlConfig.FE_INDEX);
     }

@@ -78,7 +78,7 @@ class NoteEditor extends React.Component {
         <div className="editor-info">
           <Form layout="horizontal" ref={this.formRef}>
             <Row>
-              <Col span={10}>
+              <Col span={11}>
                 <Form.Input
                   field="title"
                   onChange={(v, e) => this.setTitle(v, e)}
@@ -90,7 +90,7 @@ class NoteEditor extends React.Component {
                   }}
                 />
               </Col>
-              <Col span={10}>
+              <Col span={11} offset={2}>
                 <Form.Input
                   field="email"
                   rules={[
@@ -107,28 +107,29 @@ class NoteEditor extends React.Component {
                   ]}
                 />
               </Col>
-              <Col span={4}>
-                <Button style={{ marginTop: "24px" }}>获取验证码</Button>
-              </Col>
             </Row>
-            <Row style={{ margin: "20px 0" }}>
-              <Col span={12}>
+            <Row style={{ margin: "10px 0" }}>
+              <Col span={24}>
                 <Form.DatePicker
                   field="DeadLine"
                   type="dateTime"
-                  style={{ width: 200 }}
                   disabledDate={this.disabledDate}
                   rules={[{ required: true }]}
                 ></Form.DatePicker>
               </Col>
-              <Col span={10}>
+            </Row>
+            <Row style={{ margin: "0 0 10px" }}>
+              <Col span={18}>
                 <Form.Input
                   field="VerifyCode"
-                  style={{ width: 150 }}
                   rules={[{ required: true }]}
                 ></Form.Input>
               </Col>
+              <Col span={4} offset={2}>
+                <Button style={{ marginTop: "24px" }}>获取验证码</Button>
+              </Col>
             </Row>
+            {/* toolbar */}
             <Row style={{ width: "100%" }}>
               <div className="editor-content">
                 <div className="editor-toolbar">
@@ -149,9 +150,9 @@ class NoteEditor extends React.Component {
                   field="description"
                   label={{ text: "" }}
                   placeholder={"请输入待办描述"}
-                  rows={10}
+                  rows={3}
                   autosize
-                  maxCount={100}
+                  maxCount={50}
                 />
               </div>
             </Row>

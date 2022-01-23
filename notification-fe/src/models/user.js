@@ -12,4 +12,10 @@ export class UserModel extends BaseModel {
         this.data.id = 123456;
         console.log(this);
     }
+    async getUserInfo() {
+        // const data = await axios.get(config.api + "/api/user/getUserInfo");
+        const data = await axios.get(config.api + "/api/user/getuserinfo");
+        console.log(data);
+        // 更新视图
+    }
 }

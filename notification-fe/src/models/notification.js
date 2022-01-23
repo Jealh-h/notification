@@ -38,7 +38,7 @@ export class TaskModel extends BaseModel {
 
     async getUserInfo() {
         // const data = await axios.get(config.api + "/api/user/getUserInfo");
-        const data = await axios.get(config.api + "/cookie");
+        const data = await axios.get(config.api + "/api/test");
         console.log(data);
     }
 }

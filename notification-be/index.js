@@ -1,4 +1,7 @@
 var express = require('express');
+const constName = require('./configs/constans');
+const jwt = require('jsonwebtoken');
+const Cookie = require('cookie');
 
 // 连接数据库
 var mongoose = require('mongoose');
@@ -20,9 +23,19 @@ app.all('*', (req, res, next) => {
     });
     next();
 })
-app.all('/api', (req, res, next) => {
+app.all('/api/*', (req, res, next) => {
     // 对api路径下的接口进行token验证
-    next();
+    console.log('/api路径');
+    let cookie = req.headers.cookie;
+    cookie = Cookie.parse(cookie);
+    try {
+        const token = cookie[constName.ACCESS_TOKEM].split(' ')[1];
+        const data = jwt.verify(token, constName.JWT_SECRET);
+        next();
+    } catch (error) {
+        // token出错，验证失败
+        console.log(error);
+    }
 })
 app.use('/api/test', (req, res, next) => {
     res.end('express test');

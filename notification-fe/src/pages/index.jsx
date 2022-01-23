@@ -15,6 +15,8 @@ import {
   Spin,
   Input,
   Layout,
+  Dropdown,
+  Avatar,
 } from "@douyinfe/semi-ui";
 import {
   IconTick,
@@ -32,6 +34,7 @@ import ModalContext from "../layout/context";
 import MyEmpty from "../components/Empty";
 import { connect } from "../util/hoc";
 import CoButton from "../components/Button/index";
+import { isLogin } from "../util/util";
 import upDateTaskList from "../models/notification";
 
 import "./index.css";
@@ -81,9 +84,11 @@ class Main extends React.Component {
   }
   componentDidMount() {
     Notification.info({ ...this.opt });
-    console.log("---componentName---", this.name, this.displayName, this);
     // TODO
     // 请求数据
+    if (isLogin()) {
+      // this.props.user.getUserInfo();
+    }
   }
   // 处理更新/添加
   componentDidUpdate(preProps, preState) {
@@ -197,8 +202,8 @@ class Main extends React.Component {
   };
   test = () => {
     // console.log(document.cookie);
-    // this.props.getUserInfo();
-    this.props.user.logOut();
+    this.props.task.getUserInfo();
+    // this.props.user.logOut();
   };
   render() {
     let contextValue = this.context;
@@ -209,14 +214,32 @@ class Main extends React.Component {
             <Button onClick={this.test}>测试{this.props.user.data.id}</Button>
           }
           extral={
-            <CoButton
-              type="primary"
-              size="middle"
-              style={{ float: "right", margin: "5px 40px 0 0" }}
-              onClick={contextValue.toggleLoginVisible}
+            // <CoButton
+            //   type="primary"
+            //   size="middle"
+            //   style={{ float: "right", margin: "5px 40px 0 0" }}
+            //   onClick={contextValue.toggleLoginVisible}
+            // >
+            //   登录
+            // </CoButton>
+            <Dropdown
+              trigger={"hover"}
+              position={"bottomLeft"}
+              render={
+                <Dropdown.Menu>
+                  <Dropdown.Item>退出登录</Dropdown.Item>
+                </Dropdown.Menu>
+              }
             >
-              登录
-            </CoButton>
+              <Avatar
+                size="small"
+                src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/avatarDemo.jpeg"
+                style={{ margin: 4 }}
+              ></Avatar>
+              <Text strong type="tertiary">
+                Jealh-h
+              </Text>
+            </Dropdown>
           }
         ></Header>
         <Row>
@@ -247,9 +270,11 @@ class Main extends React.Component {
                         icon={<IconChevronLeft />}
                       ></Button>
                       <Button>
-                        <Tag color="grey">{`${this.state.currentDate.getFullYear()}年${
+                        <Text
+                          strong
+                        >{`${this.state.currentDate.getFullYear()}年${
                           this.state.currentDate.getMonth() + 1
-                        }月`}</Tag>
+                        }月`}</Text>
                       </Button>
                       <Button
                         onClick={() => this.changeChooseDate(1)}
@@ -279,7 +304,7 @@ class Main extends React.Component {
             </div>
           }
           footer={null}
-          size="medium"
+          size="small"
         >
           <NoteEditor upDate={this.upDateTaskList} />
         </Modal>

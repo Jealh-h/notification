@@ -12,8 +12,6 @@ import { validateEmailRule } from "../../util/util";
 import ExpressionPanel from "../Expressions";
 import ModalContext from "../../layout/context";
 import "./index.css";
-import { connect } from "../../util/hoc";
-import notification from "../../models/notification";
 import PropTypes from "prop-types";
 class NoteEditor extends React.Component {
   static contextType = ModalContext;

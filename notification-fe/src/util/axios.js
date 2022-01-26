@@ -5,7 +5,6 @@ const instance = axios.create({
 });
 instance.interceptors.request.use((requestConfig) => {
     console.log("---requestConfig---", requestConfig);
-    // do something before request
     return requestConfig;
 }, (error) => {
     // Notification.error({
@@ -14,8 +13,12 @@ instance.interceptors.request.use((requestConfig) => {
     // })
 });
 instance.interceptors.response.use((axiosResponse) => {
-    console.log("----axiosResponse---", axiosResponse);
-    return axiosResponse;
+    const { data } = axiosResponse;
+    if (data.status === 'OK') {
+        return axiosResponse;
+    } else {
+        throw (data.data);
+    }
 }, (error) => {
     Notification.error({
         content: "后端报错",

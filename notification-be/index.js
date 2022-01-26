@@ -17,7 +17,7 @@ const userRouter = require('./routes/user');
 var app = express();
 app.all('*', (req, res, next) => {
     res.set({
-        "content-type": "text/plain",
+        "content-type": "application/json",
         "Access-Control-Allow-Origin": "http://localhost:4000",
         "Access-Control-Allow-Credentials": true
     });
@@ -25,7 +25,6 @@ app.all('*', (req, res, next) => {
 })
 app.all('/api/*', (req, res, next) => {
     // 对api路径下的接口进行token验证
-    console.log('/api路径');
     let cookie = req.headers.cookie;
     cookie = Cookie.parse(cookie);
     try {

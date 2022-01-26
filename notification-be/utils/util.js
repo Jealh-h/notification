@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const constName = require('../configs/constans')
+const constName = require('../configs/constans');
+const Cookie = require('cookie');
 
 function encrypt() {
 
@@ -16,7 +17,21 @@ function getToken(data) {
     return token;
 }
 
+function getTokenInfo(req) {
+    try {
+        let cookie = req.headers.cookie;
+        cookie = Cookie.parse(cookie);
+        const token = cookie[constName.ACCESS_TOKEM].split(' ')[1];
+        const data = jwt.verify(token, constName.JWT_SECRET);
+        return data;
+    } catch (err) {
+        console.log('token解密失败');
+        return false;
+    }
+}
+
 module.exports = {
     encrypt,
-    getToken
+    getToken,
+    getTokenInfo
 }

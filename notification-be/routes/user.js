@@ -80,9 +80,20 @@ router.get('/github/oauth/callback', async function (req, res, next) {
     }
 })
 
-router.get('/getUserInfo', function (req, res) {
-    console.log("getuserinfo:", req.headers);
-    res.end("this is getUserInfo")
+router.get('/getUserInfo', async function (req, res) {
+    try {
+        const { id } = utils.getTokenInfo(req);
+        const userinfo = await userDao.findOne({ id: id });
+        res.end(JSON.stringify({
+            data: userinfo,
+            status: "OK"
+        }))
+    } catch (error) {
+        res.end(JSON.stringify({
+            data: "获取用户信息失败,请重试",
+            status: "ERROR"
+        }));
+    }
 })
 module.exports = router;
 

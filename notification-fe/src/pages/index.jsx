@@ -32,10 +32,8 @@ import Header from "../components/Header/index";
 import NoteEditor from "../components/NoteEditor/index";
 import ModalContext from "../layout/context";
 import MyEmpty from "../components/Empty";
-import { connect } from "../util/hoc";
 import CoButton from "../components/Button/index";
 import { isLogin } from "../util/util";
-import upDateTaskList from "../models/notification";
 
 import "./index.css";
 import "./index.less";
@@ -85,7 +83,8 @@ class Main extends React.Component {
   componentDidMount() {
     Notification.info({ ...this.opt });
     // TODO
-    // 请求数据
+    console.log("--props---", this.props);
+    console.log("--context---", this.context);
     if (isLogin()) {
       // this.props.user.getUserInfo();
     }
@@ -201,45 +200,46 @@ class Main extends React.Component {
     this.context.toggleVisible();
   };
   test = () => {
-    // console.log(document.cookie);
-    this.props.task.getUserInfo();
-    // this.props.user.logOut();
+    const { userStore, taskStore } = this.context.store;
+    userStore.getUserinfo();
   };
   render() {
     let contextValue = this.context;
+    const { userStore, taskStore } = this.context.store;
     return (
       <>
         <Header
-          title={
-            <Button onClick={this.test}>测试{this.props.user.data.id}</Button>
-          }
+          title={<Button onClick={this.test}>测试</Button>}
           extral={
-            // <CoButton
-            //   type="primary"
-            //   size="middle"
-            //   style={{ float: "right", margin: "5px 40px 0 0" }}
-            //   onClick={contextValue.toggleLoginVisible}
-            // >
-            //   登录
-            // </CoButton>
-            <Dropdown
-              trigger={"hover"}
-              position={"bottomLeft"}
-              render={
-                <Dropdown.Menu>
-                  <Dropdown.Item>退出登录</Dropdown.Item>
-                </Dropdown.Menu>
-              }
-            >
-              <Avatar
-                size="small"
-                src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/avatarDemo.jpeg"
-                style={{ margin: 4 }}
-              ></Avatar>
-              <Text strong type="tertiary">
-                Jealh-h
-              </Text>
-            </Dropdown>
+            isLogin() ? (
+              <Dropdown
+                trigger={"hover"}
+                position={"bottomLeft"}
+                render={
+                  <Dropdown.Menu>
+                    <Dropdown.Item>退出登录</Dropdown.Item>
+                  </Dropdown.Menu>
+                }
+              >
+                <Avatar
+                  size="small"
+                  src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/avatarDemo.jpeg"
+                  style={{ margin: 4 }}
+                ></Avatar>
+                <Text strong type="tertiary">
+                  {userStore.userinfo.name}
+                </Text>
+              </Dropdown>
+            ) : (
+              <CoButton
+                type="primary"
+                size="middle"
+                style={{ float: "right", margin: "5px 40px 0 0" }}
+                onClick={contextValue.toggleLoginVisible}
+              >
+                登录
+              </CoButton>
+            )
           }
         ></Header>
         <Row>
@@ -344,10 +344,4 @@ class Main extends React.Component {
     );
   }
 }
-function mapModel(store) {
-  return {
-    task: store.TaskModel,
-    user: store.UserModel,
-  };
-}
-export default connect(mapModel)(Main);
+export default Main;

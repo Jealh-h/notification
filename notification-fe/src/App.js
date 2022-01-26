@@ -1,9 +1,10 @@
 import React, { Suspense, lazy } from 'react';
 import { Spin } from '@douyinfe/semi-ui';
 import ModalContext from './layout/context';
-import Store from './models/index';
+import RootStore from './stores';
 import './App.css'
 
+const rootStore = new RootStore();
 const Main = lazy(() => import('./pages/index'))
 
 export default class App extends React.Component {
@@ -16,7 +17,7 @@ export default class App extends React.Component {
             toggleLoginVisible: this.toggleLoginVisible,
             isUpdate: false,
             toggleUpdateState: this.toggleUpdateState,
-            store: Store
+            store: rootStore
         }
     }
     toggleLoginVisible = () => {

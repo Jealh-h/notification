@@ -4,9 +4,7 @@ import App from './App.js';
 import ErrorBoundary from './components/ErrorBoundary/index.jsx';
 
 ReactDOM.render(
-    <ErrorBoundary>
-        <App />
-    </ErrorBoundary>
+    <App />
     ,
     document.querySelector("#root")
 )

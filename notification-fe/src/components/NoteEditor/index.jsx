@@ -1,4 +1,5 @@
 import React from "react";
+import { observer } from "mobx-react";
 import {
   Form,
   Button,
@@ -24,9 +25,6 @@ class NoteEditor extends React.Component {
       expressionVisible: false,
     };
   }
-  componentDidMount() {
-    // this.props.addNotification();
-  }
   setTitle = (value) => {
     this.setState({
       title: value,
@@ -46,20 +44,46 @@ class NoteEditor extends React.Component {
   };
   // 提交申请
   handleFormSubmit = () => {
+    const { userStore, taskStore } = this.context.store;
     const form = this.formRef.current;
     const { values, errors } = form.formApi.getFormState();
-    console.log("表单数据:", Object.values(values), Object.values(errors));
-    if (!Object.values(values).length || Object.values(errors).length) {
-      Notification.error({ content: "请校验表单内容" });
+    console.log("表单数据:", values);
+    console.log("表单错误:", Object.values(errors));
+    if (!Object.values(values).length) {
+      Notification.error({ content: "请填写表单类容" });
       return;
+    } else if (Object.values(errors).length !== 0) {
+      Notification.error({ content: "请填写表单类容" });
+      return;
+    } else {
+      // TODO
+      // 先验证验证码是否正确
+      values.description = values.description ? values.description : "";
+      values.status = "underway";
+      taskStore.addTask(values);
+      // 关闭编辑框
+      this.context.toggleVisible();
+      // 修改状态为可以更新状态
+      this.context.toggleUpdateState();
+      Notification.success({ content: "添加成功", position: "top" });
     }
-    // TODO
-    // this.props.addNotification(values);
-    // 关闭编辑框
-    this.context.toggleVisible();
-    // 修改状态为可以更新状态
-    this.context.toggleUpdateState();
   };
+  // 获取验证码
+  getVerifyCode = (e) => {
+    const { verifyStore } = this.context.store;
+    const form = this.formRef.current;
+    const { values, errors } = form.formApi.getFormState();
+    if (values["email"] === undefined || errors["email"]) {
+      Notification.warning({ content: "请检查邮件填写" });
+    } else {
+      console.log("发送");
+      // 修改发送验证码按钮的状态
+      verifyStore.setTimer();
+      // 发起发送验证码的请求
+      verifyStore.getCodeAndUUid(values["email"]);
+    }
+  };
+  // 设置时间选择框的范围
   disabledDate = (date) => {
     const ddl = new Date();
     return date.getTime() < ddl.getTime();
@@ -68,6 +92,7 @@ class NoteEditor extends React.Component {
     const iconColor = {
       color: "#bfbfbf",
     };
+    const { verifyStore, taskStore } = this.context.store;
     return (
       <div
         className="note-editor"
@@ -109,7 +134,7 @@ class NoteEditor extends React.Component {
             <Row style={{ margin: "10px 0" }}>
               <Col span={24}>
                 <Form.DatePicker
-                  field="DeadLine"
+                  field="deadline"
                   type="dateTime"
                   disabledDate={this.disabledDate}
                   rules={[{ required: true }]}
@@ -119,12 +144,18 @@ class NoteEditor extends React.Component {
             <Row style={{ margin: "0 0 10px" }}>
               <Col span={18}>
                 <Form.Input
-                  field="VerifyCode"
+                  field="verifyCode"
                   rules={[{ required: true }]}
                 ></Form.Input>
               </Col>
               <Col span={4} offset={2}>
-                <Button style={{ marginTop: "24px" }}>获取验证码</Button>
+                <Button
+                  disabled={verifyStore.disabled}
+                  onClick={this.getVerifyCode}
+                  style={{ marginTop: "24px", width: "6rem" }}
+                >
+                  {verifyStore.time}
+                </Button>
               </Col>
             </Row>
             {/* toolbar */}
@@ -175,4 +206,4 @@ NoteEditor.propTypes = {
   addNotification: PropTypes.func,
   upDate: PropTypes.func,
 };
-export default NoteEditor;
+export default observer(NoteEditor);

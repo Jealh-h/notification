@@ -1,19 +1,15 @@
-import { makeAutoObservable, action } from "mobx";
+import { makeAutoObservable, action, runInAction } from "mobx";
+import React from 'react';
+import { IconEmoji } from "@douyinfe/semi-icons";
+import { Notification } from "@douyinfe/semi-ui";
 import axios from '../util/axios';
-import config from '../config/url';
+import config from '../config/configs';
 
 class UserStore {
-    userinfo = {
-        "login": '',
-        "name": 'jealh',
-        "id": '',
-        "avatar_url": '',
-    }
+    userinfo = {}
     isloading = false;
     constructor() {
-        makeAutoObservable(this, {
-            setName: action
-        });
+        makeAutoObservable(this);
     }
     async login() {
         let res = await axios.get('/api/user/login');
@@ -23,13 +19,26 @@ class UserStore {
     }
 
     async logout() {
-        let res = await axios.get(`${config.api}/api/user/logout`);
+        let res = await axios.get(`/api/user/logout`);
         // TODO删除token
     }
 
     async getUserinfo() {
-        let res = await axios.get(`${config.api}/api/user/getUserInfo`);
-        console.log("GET_USER_INFO", res);
+        try {
+            let res = await axios.get(`/api/user/getUserInfo`);
+            runInAction(() => {
+                this.userinfo = res;
+            })
+            Notification.info({
+                title: `你好,${this.userinfo?.name}`,
+                content: "welcomme to the notification",
+                duration: 3,
+                position: "top",
+                icon: <IconEmoji />,
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
-export default new UserStore();
+export default UserStore;

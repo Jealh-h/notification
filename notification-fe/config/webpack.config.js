@@ -14,7 +14,7 @@ module.exports = function (webpackEnv) {
         ],
         output: {
             // filename: 'bundle.js',
-            filename: '[name].bundle.js',
+            filename: '[name].[contenthash].bundle.js',
             path: path.resolve(__dirname, '../dist'),
             clean: true, //清理原来构建的dist目录
             publicPath: '/'

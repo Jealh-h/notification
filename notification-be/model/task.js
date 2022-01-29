@@ -4,7 +4,8 @@ const TaskInfoSchema = new mongoose.Schema({
     "deadline": Date,
     "id": Number,
     "email": String,
-    "description": String
+    "description": String,
+    "status": String
 })
 // 在连接的数据库中创建task表
 var TaskModoel = mongoose.model('task', TaskInfoSchema);

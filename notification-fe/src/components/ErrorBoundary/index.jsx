@@ -10,14 +10,13 @@ export default class ErrorBoundary extends React.Component {
     };
   }
   componentDidCatch(error, info) {
-    // Display fallback UI
     this.setState({ hasError: true, error: info });
-    // You can also log the error to an error reporting service
   }
   render() {
+    const { hasError } = this.state;
     return (
       <>
-        {this.state.hasError ? (
+        {hasError ? (
           <>
             <Typography.Title>
               Sorry here are some thing wrong 😭

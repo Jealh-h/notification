@@ -1,6 +1,6 @@
 import React from "react";
+import { observer } from "mobx-react";
 import {
-  Notification,
   Typography,
   Row,
   Col,
@@ -10,17 +10,16 @@ import {
   Card,
   Button,
   ButtonGroup,
-  Tag,
   Popover,
   Spin,
   Input,
   Layout,
   Dropdown,
   Avatar,
+  Pagination,
 } from "@douyinfe/semi-ui";
 import {
   IconTick,
-  IconEmoji,
   IconPlus,
   IconBell,
   IconChevronLeft,
@@ -55,25 +54,18 @@ class Main extends React.Component {
   static contextType = ModalContext;
   constructor(props) {
     super(props);
-    this.opt = {
-      title: "你好,HHD",
-      content: "welcomme to the notification",
-      duration: 3,
-      position: "top",
-      icon: <IconEmoji />,
-    };
     this.state = {
       currentDate: new Date(),
       taskList: [
         {
           title: "做计网作业做计网作业",
-          date: "2021-12-31 15:30",
+          deadline: "2021-12-31 15:30",
           descrption: "请务必完成啊了✨",
           status: "finish",
         },
         {
           title: "做计网作业",
-          date: "2021-12-31 15:30",
+          deadline: "2021-12-31 15:30",
           descrption: "请务必完成啊了✨",
           status: "underway",
         },
@@ -81,12 +73,10 @@ class Main extends React.Component {
     };
   }
   componentDidMount() {
-    Notification.info({ ...this.opt });
-    // TODO
-    console.log("--props---", this.props);
-    console.log("--context---", this.context);
+    const { userStore, taskStore } = this.context.store;
     if (isLogin()) {
-      // this.props.user.getUserInfo();
+      // 获取用户信息
+      userStore.getUserinfo();
     }
   }
   // 处理更新/添加
@@ -175,7 +165,7 @@ class Main extends React.Component {
               <Timeline.Item
                 extra={item.descrption}
                 key={index}
-                time={"deadline：" + item.date}
+                time={"deadline：" + item.deadline}
               >
                 {item.title}
                 <div className="time-indicator">
@@ -186,6 +176,12 @@ class Main extends React.Component {
             );
           })}
         </Timeline>
+        <Pagination
+          total={80}
+          size="small"
+          hoverShowPageSelect
+          defaultCurrentPage={3}
+        ></Pagination>
       </>
     );
   };
@@ -201,7 +197,7 @@ class Main extends React.Component {
   };
   test = () => {
     const { userStore, taskStore } = this.context.store;
-    userStore.getUserinfo();
+    taskStore.addTask({ name: 132 });
   };
   render() {
     let contextValue = this.context;
@@ -223,11 +219,11 @@ class Main extends React.Component {
               >
                 <Avatar
                   size="small"
-                  src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/avatarDemo.jpeg"
+                  src={userStore.userinfo?.avatar_url}
                   style={{ margin: 4 }}
                 ></Avatar>
                 <Text strong type="tertiary">
-                  {userStore.userinfo.name}
+                  {userStore.userinfo?.name}
                 </Text>
               </Dropdown>
             ) : (
@@ -245,7 +241,12 @@ class Main extends React.Component {
         <Row>
           <Col lg={24} md={24}>
             <Row>
-              <Col style={{ padding: "0 100px" }} lg={8} sm={24}>
+              <Col
+                className="task-list"
+                style={{ padding: "0 100px" }}
+                lg={8}
+                sm={24}
+              >
                 {this.state.taskList.length ? (
                   this.rendTaskList()
                 ) : (
@@ -344,4 +345,4 @@ class Main extends React.Component {
     );
   }
 }
-export default Main;
+export default observer(Main);

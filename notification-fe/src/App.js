@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { Spin } from '@douyinfe/semi-ui';
 import ModalContext from './layout/context';
 import RootStore from './stores';
+import ErrorBoundary from './components/ErrorBoundary/index.jsx';
 import './App.css'
 
 const rootStore = new RootStore();
@@ -36,10 +37,15 @@ export default class App extends React.Component {
         }))
     }
     render() {
-        return <Suspense fallback={<Spin size="large" />}>
-            <ModalContext.Provider value={this.state}>
-                <Main />
-            </ModalContext.Provider>
-        </Suspense>
+
+        return (
+            <Suspense fallback={<Spin size="large" />}>
+                <ErrorBoundary>
+                    <ModalContext.Provider value={this.state}>
+                        <Main />
+                    </ModalContext.Provider>
+                </ErrorBoundary>
+            </Suspense>
+        )
     }
 }

@@ -5,8 +5,8 @@ export function validateEmailRule(email) {
 }
 
 export function isLogin() {
-    let cookie = document.cookie;
+    let cookie = document.cookie || "";
     let reg = /(.*)=.*/i;
     let tokenReg = /(ACCESS_TOKEN)/g;
-    return tokenReg.test(reg.exec(cookie)[1]);
+    return cookie && tokenReg.test(reg.exec(cookie)[1]);
 }

@@ -37,7 +37,6 @@ export default class App extends React.Component {
         }))
     }
     render() {
-
         return (
             <Suspense fallback={<Spin size="large" />}>
                 <ErrorBoundary>

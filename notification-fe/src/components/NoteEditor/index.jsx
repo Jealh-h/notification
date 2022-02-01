@@ -43,8 +43,8 @@ class NoteEditor extends React.Component {
     }));
   };
   // 提交申请
-  handleFormSubmit = () => {
-    const { userStore, taskStore } = this.context.store;
+  handleFormSubmit = async () => {
+    const { userStore, taskStore, verifyStore } = this.context.store;
     const form = this.formRef.current;
     const { values, errors } = form.formApi.getFormState();
     console.log("表单数据:", values);
@@ -60,12 +60,15 @@ class NoteEditor extends React.Component {
       // 先验证验证码是否正确
       values.description = values.description ? values.description : "";
       values.status = "underway";
-      taskStore.addTask(values);
-      // 关闭编辑框
-      this.context.toggleVisible();
-      // 修改状态为可以更新状态
-      this.context.toggleUpdateState();
-      Notification.success({ content: "添加成功", position: "top" });
+      values.uuid = verifyStore.uuid;
+      let verifyStatus = await taskStore.addTask(values);
+      if (verifyStatus) {
+        // 关闭编辑框
+        this.context.toggleVisible();
+        // 修改状态为可以更新状态
+        this.context.toggleUpdateState();
+        Notification.success({ content: "添加成功", position: "top" });
+      }
     }
   };
   // 获取验证码
@@ -76,9 +79,7 @@ class NoteEditor extends React.Component {
     if (values["email"] === undefined || errors["email"]) {
       Notification.warning({ content: "请检查邮件填写" });
     } else {
-      console.log("发送");
-      // 修改发送验证码按钮的状态
-      verifyStore.setTimer();
+      console.log(values["email"]);
       // 发起发送验证码的请求
       verifyStore.getCodeAndUUid(values["email"]);
     }

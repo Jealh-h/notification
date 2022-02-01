@@ -17,7 +17,8 @@ mongoose.connection.on('error', function () {
 
 const userRouter = require('./routes/user');
 const taskRouter = require('./routes/task');
-const verifyRouter = require('./routes/verify')
+const verifyRouter = require('./routes/verify');
+const loginRouter = require('./routes/login');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -65,6 +66,7 @@ app.use('/cookie', (req, res, next) => {
 app.use('/api/user', userRouter);
 app.use('/api/task', taskRouter);
 app.use('/api/verify', verifyRouter);
+app.use('/login', loginRouter);
 // 处理404
 app.use(function (req, res, next) {
     res.set('status', '404');

@@ -17,7 +17,9 @@ import {
   Dropdown,
   Avatar,
   Pagination,
+  Notification,
 } from "@douyinfe/semi-ui";
+import { IllustrationIdle } from "@douyinfe/semi-illustrations";
 import {
   IconTick,
   IconPlus,
@@ -36,7 +38,7 @@ import { isLogin } from "../util/util";
 
 import "./index.css";
 import "./index.less";
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 const { Content } = Layout;
 
 const statusMap = {
@@ -77,6 +79,11 @@ class Main extends React.Component {
     if (isLogin()) {
       // 获取用户信息
       userStore.getUserinfo();
+    } else {
+      Notification.info({
+        title: "请登录",
+        position: "top",
+      });
     }
   }
   // 处理更新/添加
@@ -165,7 +172,7 @@ class Main extends React.Component {
               <Timeline.Item
                 extra={item.descrption}
                 key={index}
-                time={"deadline：" + item.deadline}
+                time={"deadline:" + item.deadline}
               >
                 {item.title}
                 <div className="time-indicator">
@@ -247,17 +254,33 @@ class Main extends React.Component {
                 lg={8}
                 sm={24}
               >
-                {this.state.taskList.length ? (
-                  this.rendTaskList()
+                {isLogin() ? (
+                  this.state.taskList.length ? (
+                    this.rendTaskList()
+                  ) : (
+                    <>
+                      <Input
+                        placeholder={"输入邮件看看自己的事情吧"}
+                        onKeyDown={this.handleSearch}
+                        suffix={<IconSearch />}
+                      ></Input>
+                      <MyEmpty></MyEmpty>
+                    </>
+                  )
                 ) : (
-                  <>
-                    <Input
-                      placeholder={"输入邮件看看自己的事情吧"}
-                      onKeyDown={this.handleSearch}
-                      suffix={<IconSearch />}
-                    ></Input>
-                    <MyEmpty></MyEmpty>
-                  </>
+                  <div className="not-loggin">
+                    <IllustrationIdle style={{ width: 150, height: 150 }} />
+                    <Paragraph strong>
+                      <Text
+                        size="normal"
+                        onClick={contextValue.toggleLoginVisible}
+                        link
+                      >
+                        登录
+                      </Text>
+                      查看更多
+                    </Paragraph>
+                  </div>
                 )}
               </Col>
               {/* 日历 */}
@@ -324,7 +347,7 @@ class Main extends React.Component {
             style={{ textAlign: "center" }}
           >
             <div className="gh-login-entry">
-              <a href="http://localhost:3003/api/user/gh-login">
+              <a href="http://localhost:3003/login/gh-login">
                 <IconGithubLogo size="extra-large" />
               </a>
             </div>

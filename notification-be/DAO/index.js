@@ -118,12 +118,12 @@ class BaseDAO {
     /**
      * 更新
      * @param {object} condition 
-     * @param {function} updater 
+     * @param {object} updater 
      * @returns {Promise}
      */
     update(condition, updater) {
         return new Promise((resolve, reject) => {
-            this.Model.update(condition, updater, (error, result) => {
+            this.Model.updateOne(condition, updater, (error, result) => {
                 if (error) {
                     console.log(`update error=>${error}`);
                     reject(error);

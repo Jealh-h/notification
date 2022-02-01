@@ -18,9 +18,10 @@ class TaskStore {
     async addTask(data) {
         try {
             let res = await axios.post('/api/task/addtask', data);
-            console.log("--addtask-", res);
+            return true;
         } catch (error) {
-            console.log(err);
+            console.log(error);
+            return false;
         }
     }
 

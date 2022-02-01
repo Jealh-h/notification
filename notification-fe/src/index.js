@@ -4,8 +4,7 @@ import App from './App.js';
 import ErrorBoundary from './components/ErrorBoundary/index.jsx';
 
 ReactDOM.render(
-    <App />
-    ,
+    <App />,
     document.querySelector("#root")
 )
 // 热模块

@@ -1,6 +1,5 @@
 import UserStore from "./UserStore";
 import TaskStore from "./TaskStore";
-import VerifyCodeStore from "./verifyCodeStore";
 import VerifyStore from './VerifyStore';
 
 export default class RootStore {

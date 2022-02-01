@@ -6,5 +6,10 @@ module.exports = {
     MAIL_PASS: "PMBXJNFNJOSXJZFH",
     MAIL_HOST: "smtp.163.com",
     MAIL_PORT: 465,
-    MAIL_SERVICE: 163
+    MAIL_SERVICE: "163",
+    SERVER_IP: '47.99.199.187',
+    REDIS_PORT: 6379,
+    REDIS_PASSWORD: 'hhd1620175472',
+    TASK_FINISH: 'finish',
+    TASK_UNDERWAY: 'underway'
 }

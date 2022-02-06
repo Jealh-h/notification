@@ -12,12 +12,14 @@ import {
   ButtonGroup,
   Popover,
   Spin,
-  Input,
+  SideSheet,
   Layout,
   Dropdown,
   Avatar,
   Pagination,
   Notification,
+  Switch,
+  List,
 } from "@douyinfe/semi-ui";
 import { IllustrationIdle } from "@douyinfe/semi-illustrations";
 import {
@@ -26,7 +28,8 @@ import {
   IconBell,
   IconChevronLeft,
   IconChevronRight,
-  IconSearch,
+  IconMoon,
+  IconSun,
   IconGithubLogo,
 } from "@douyinfe/semi-icons";
 import Header from "../components/Header/index";
@@ -40,45 +43,58 @@ import "./index.css";
 import "./index.less";
 const { Title, Text, Paragraph } = Typography;
 const { Content } = Layout;
-
+const colorLevel = [
+  "var(--semi-color-danger-light-default)",
+  "var(--semi-color-danger-light-active)",
+  "var( --semi-color-warning)",
+  "var(--semi-color-danger)",
+  "var(--semi-color-danger-active)",
+];
+const importantDate = {
+  position: "absolute",
+  left: "0",
+  right: "0",
+  top: "0",
+  bottom: "0",
+  cursor: "pointer",
+  backgroundColor: "var(--semi-color-danger-light-default)",
+};
 const statusMap = {
-  finish: {
+  success: {
     icon: <IconTick size="small" style={{ color: "#63B963" }} />,
     tip: "已完成",
   },
-  underway: {
+  ongoing: {
     icon: <Spin size="small"></Spin>,
     tip: "进行中",
   },
 };
-
+function setBg(count) {
+  if (count < 2) return 0;
+  else if (count < 5) return 1;
+  else if (count < 8) return 2;
+  else if (count < 12) return 3;
+  else return 4;
+}
 class Main extends React.Component {
   static contextType = ModalContext;
   constructor(props) {
     super(props);
     this.state = {
       currentDate: new Date(),
-      taskList: [
-        {
-          title: "做计网作业做计网作业",
-          deadline: "2021-12-31 15:30",
-          descrption: "请务必完成啊了✨",
-          status: "finish",
-        },
-        {
-          title: "做计网作业",
-          deadline: "2021-12-31 15:30",
-          descrption: "请务必完成啊了✨",
-          status: "underway",
-        },
-      ],
+      taskList: [],
+      visible: false,
+      currentDayTask: [],
     };
   }
   componentDidMount() {
-    const { userStore, taskStore } = this.context.store;
+    const { userStore, taskStore, monthDataStore } = this.context.store;
     if (isLogin()) {
       // 获取用户信息
+      monthDataStore.getMonthData();
       userStore.getUserinfo();
+      taskStore.loadTasks();
+      taskStore.getTotalNumber();
     } else {
       Notification.info({
         title: "请登录",
@@ -96,47 +112,73 @@ class Main extends React.Component {
   renderDot = () => {
     return <div style={{ marginRight: "3.5em" }}>😂</div>;
   };
+  // 渲染日期单元格
   renderDateGrid = (dateString, date) => {
-    const importantDate = {
-      position: "absolute",
-      left: "0",
-      right: "0",
-      top: "0",
-      bottom: "0",
-      cursor: "pointer",
-      backgroundColor: "var(--semi-color-danger-light-default)",
-    };
-    const now = new Date();
-    if (
-      now.getDate() === date.getDate() &&
-      now.getFullYear() === date.getFullYear() &&
-      now.getMonth() === date.getMonth()
-    ) {
+    const { monthDataStore } = this.context.store;
+    const day = date.getDate();
+    const month = date.getMonth();
+    const key = `${month}月${day}日`;
+    if (monthDataStore.monthData[key] !== undefined) {
+      let bgc = colorLevel[setBg(monthDataStore.monthData[key]?.length)];
       return (
         <Popover
-          position="right"
+          position="top"
           content={
-            <article style={{ padding: 12 }}>
-              Hi ByteDancer, this is a popover.
-              <br /> We have 2 lines.
+            <article className="canlendar-cell-tip" style={{ padding: 12 }}>
+              {`这一天有${monthDataStore.monthData[key]?.length}个事件`}
+              <br />
+              <div className="task-num-tip">点击查看详情</div>
             </article>
           }
         >
-          <div style={importantDate}>
-            <div
-              style={{
-                width: "5px",
-                height: "5px",
-                backgroundColor: "red",
-                position: "absolute",
-                top: "50%",
-              }}
-            ></div>
-          </div>
+          <div
+            style={{ ...importantDate, backgroundColor: bgc }}
+            onClick={() =>
+              this.handleSiderVisiable(monthDataStore.monthData[key])
+            }
+          ></div>
         </Popover>
       );
     }
     return null;
+  };
+  // 显示侧边栏
+  handleSiderVisiable = (data) => {
+    this.setState({
+      visible: true,
+      currentDayTask: data,
+    });
+  };
+  // 渲染侧边栏内容
+  rendSideSheetContent = () => {
+    if (!this.state.currentDayTask.length) {
+      return null;
+    }
+    return (
+      <List
+        dataSource={this.state.currentDayTask}
+        renderItem={(item) => (
+          <List.Item
+            main={
+              <div>
+                <h4
+                  style={{
+                    color: "var(--semi-color-text-0)",
+                    fontWeight: "bolder",
+                  }}
+                >
+                  {item.title}
+                </h4>
+                {item.description}
+                <div className="task-num-tip">
+                  {new Date(item.deadline).toLocaleString()}
+                </div>
+              </div>
+            }
+          />
+        )}
+      ></List>
+    );
   };
   changeChooseDate = (identify) => {
     const month = this.state.currentDate.getMonth() + identify;
@@ -156,38 +198,37 @@ class Main extends React.Component {
       currentDate: newDate,
     });
   };
-  handleSearch = (e) => {
-    if (e.code === "Enter") {
-      // TODO 发送请求
-    }
-  };
   upDateTaskList = () => {};
+  // 渲染task列表
   rendTaskList = () => {
+    const { taskStore } = this.context.store;
     return (
       <>
         <Title heading={3}>当前需要完成的事情</Title>
         <Timeline>
-          {this.state.taskList.map((item, index) => {
+          {taskStore.tasks.map((item, index) => {
+            let time = new Date(item.deadline).toLocaleString();
             return (
               <Timeline.Item
                 extra={item.descrption}
                 key={index}
-                time={"deadline:" + item.deadline}
+                type={item.status}
+                time={"Deadline：" + time}
               >
                 {item.title}
                 <div className="time-indicator">
                   {statusMap[item.status].icon}
-                  {statusMap[item.status].tip}
+                  <div className="status-tip">{statusMap[item.status].tip}</div>
                 </div>
               </Timeline.Item>
             );
           })}
         </Timeline>
         <Pagination
-          total={80}
+          total={taskStore.totalPage}
           size="small"
+          onPageChange={(e) => taskStore.pageChange(e)}
           hoverShowPageSelect
-          defaultCurrentPage={3}
         ></Pagination>
       </>
     );
@@ -202,9 +243,14 @@ class Main extends React.Component {
     // }
     this.context.toggleVisible();
   };
-  test = () => {
-    const { userStore, taskStore } = this.context.store;
-    taskStore.addTask({ name: 132 });
+  // 日夜模式转换
+  changeMode = () => {
+    const body = document.body;
+    if (body.hasAttribute("theme-mode")) {
+      body.removeAttribute("theme-mode");
+    } else {
+      body.setAttribute("theme-mode", "dark");
+    }
   };
   render() {
     let contextValue = this.context;
@@ -212,7 +258,14 @@ class Main extends React.Component {
     return (
       <>
         <Header
-          title={<Button onClick={this.test}>测试</Button>}
+          title={
+            <Switch
+              onChange={this.changeMode}
+              checkedText={<IconMoon />}
+              uncheckedText={<IconSun style={{ color: "#FBCD2C" }} />}
+              style={{ marginLeft: 5 }}
+            />
+          }
           extral={
             isLogin() ? (
               <Dropdown
@@ -220,7 +273,9 @@ class Main extends React.Component {
                 position={"bottomLeft"}
                 render={
                   <Dropdown.Menu>
-                    <Dropdown.Item>退出登录</Dropdown.Item>
+                    <Dropdown.Item onClick={userStore.logout}>
+                      退出登录
+                    </Dropdown.Item>
                   </Dropdown.Menu>
                 }
               >
@@ -248,22 +303,12 @@ class Main extends React.Component {
         <Row>
           <Col lg={24} md={24}>
             <Row>
-              <Col
-                className="task-list"
-                style={{ padding: "0 100px" }}
-                lg={8}
-                sm={24}
-              >
+              <Col className="task-list" lg={8} sm={24}>
                 {isLogin() ? (
-                  this.state.taskList.length ? (
+                  taskStore.tasks.length ? (
                     this.rendTaskList()
                   ) : (
                     <>
-                      <Input
-                        placeholder={"输入邮件看看自己的事情吧"}
-                        onKeyDown={this.handleSearch}
-                        suffix={<IconSearch />}
-                      ></Input>
                       <MyEmpty></MyEmpty>
                     </>
                   )
@@ -317,6 +362,15 @@ class Main extends React.Component {
             </Row>
           </Col>
         </Row>
+        <SideSheet
+          visible={this.state.visible}
+          onCancel={() => {
+            this.setState({ visible: !this.state.visible });
+          }}
+          // afterVisibleChange={this.handleSiderVisiable}
+        >
+          {this.rendSideSheetContent()}
+        </SideSheet>
         {/* 添加提示模态框 */}
         <Modal
           visible={contextValue.visible}

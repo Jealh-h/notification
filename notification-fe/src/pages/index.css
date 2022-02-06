@@ -41,3 +41,7 @@
   align-items: center;
   transition: border 0.5s;
 }
+.semi-switch-checked,
+.semi-switch-checked:hover {
+  background-color: rgb(26, 25, 25);
+}

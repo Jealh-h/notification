@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { Spin } from '@douyinfe/semi-ui';
+import Loading from './components/Loading';
 import ModalContext from './layout/context';
 import RootStore from './stores';
 import ErrorBoundary from './components/ErrorBoundary/index.jsx';
@@ -38,7 +38,7 @@ export default class App extends React.Component {
     }
     render() {
         return (
-            <Suspense fallback={<Spin size="large" />}>
+            <Suspense fallback={<Loading size="large" />}>
                 <ErrorBoundary>
                     <ModalContext.Provider value={this.state}>
                         <Main />

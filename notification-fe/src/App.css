@@ -5,6 +5,12 @@
 body {
   margin: 0;
 }
+body[theme-mode] {
+  background-color: #16161a;
+}
+body[theme-mode] .status-tip {
+  color: aliceblue;
+}
 *::-webkit-scrollbar {
   width: 10px;
   height: 1px;
@@ -19,4 +25,15 @@ body {
 *::-webkit-scrollbar-corner {
 }
 @media screen and (min-width: 980px) {
+  .task-list {
+    padding: 0 100px;
+  }
+}
+@media (max-width: 980px) {
+  .task-list {
+    padding: 50px;
+  }
+  body .header-nav {
+    padding: 0 40px;
+  }
 }

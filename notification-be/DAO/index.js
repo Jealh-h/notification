@@ -151,5 +151,42 @@ class BaseDAO {
             })
         })
     }
+
+    /**
+     * 分页查询，按时间降序
+     * @param {Object} condition 
+     * @param {Object} sortoption 
+     * @param {Number} currentpage 
+     * @param {Number} pagesize 
+     * @returns 
+     */
+    findByOrder(condition, sortoption, currentpage, pagesize) {
+        return new Promise((resolve, reject) => {
+            this.Model.find(condition).sort(sortoption).skip((currentpage - 1) * pagesize).limit(pagesize).exec(((err, doc) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(doc);
+                }
+            }));
+        })
+    }
+
+    /**
+     * 查询符合条件的文档的数目
+     * @param {Object} consdition 
+     * @returns {Promise} 数量的Promise
+     */
+    findTotalNumber(consdition) {
+        return new Promise((resolve, reject) => {
+            this.Model.where(consdition).count(function (err, count) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(count);
+                }
+            });
+        })
+    }
 }
 module.exports = BaseDAO;

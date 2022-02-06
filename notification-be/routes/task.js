@@ -7,19 +7,37 @@ const redisClient = require('../utils/redis');
 const scheduler = require('node-schedule');
 const emailHelper = require('../utils/email');
 const constProper = require('../configs/constans');
-router.get('/querytask', (req, res) => {
-    console.log("---querytask---", req.query);
-    const data = util.getTokenInfo(req);
-    res.json({
-        data: data,
-        status: "OK"
-    });
+const taskHandleProcess = require('../index');
+router.get('/querytask', async (req, res) => {
+    try {
+        const cookieData = util.getTokenInfo(req);
+        const { currentPage, pageSize } = req.query;
+        // const data = await taskDao.findAll({
+        //     id: cookieData.id
+        // })
+        const data = await taskDao.findByOrder({
+            id: cookieData.id
+        }, { deadline: "desc" }, currentPage, pageSize);
+        res.json({
+            data: data,
+            status: "OK"
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            data: constProper.BACK_ERROR,
+            status: 'FALSE'
+        })
+    }
 });
 router.post('/addtask', async (req, res) => {
     try {
         const tokenData = util.getTokenInfo(req);
         const { uuid, verifyCode } = req.body;
         const data = { ...req.body, ...tokenData };
+        data.year = new Date(data.deadline).getFullYear();
+        data.month = new Date(data.deadline).getMonth();
+        data.date = new Date(data.deadline).getDate();
         delete data?.uuid;
         delete data?.verifyCode;
         let verifyResult = await redisClient.get(uuid);
@@ -35,7 +53,6 @@ router.post('/addtask', async (req, res) => {
                 status: "FALSE"
             })
         } else {
-            let result = await taskDao.create(data);
             // {
             //     title: '测试',
             //     deadline: 2022-02-01T14:30:28.458Z,
@@ -46,13 +63,15 @@ router.post('/addtask', async (req, res) => {
             //     _id: new ObjectId("61f9422be9c60e0a923adcbe"),
             //     __v: 0
             // }
-            // 设置定时任务
-            scheduler.scheduleJob(new Date(data.deadline), function (taskinfo) {
-                emailHelper.sendNotification(data.email, data);
-                taskDao.update({
-                    _id: taskinfo['_id']
-                }, { status: constProper.TASK_FINISH })
-            }.bind(null, result))
+            taskHandleProcess.send(JSON.stringify(data));
+            // let result = await taskDao.create(data);
+            // // 设置定时任务
+            // scheduler.scheduleJob(new Date(data.deadline), function (taskinfo) {
+            //     emailHelper.sendNotification(data.email, data);
+            //     taskDao.update({
+            //         _id: taskinfo['_id']
+            //     }, { status: constProper.TASK_FINISH })
+            // }.bind(null, result))
             res.json({
                 data: result,
                 status: "OK"
@@ -62,5 +81,41 @@ router.post('/addtask', async (req, res) => {
         console.log(error);
     }
 })
-
+router.get('/total', async (req, res) => {
+    try {
+        const cookieData = util.getTokenInfo(req);
+        const itemNumber = await taskDao.findTotalNumber({
+            id: cookieData.id
+        })
+        res.json({
+            data: itemNumber,
+            status: "OK"
+        })
+    } catch (error) {
+        res.json({
+            data: '后端错误',
+            status: "FALSE"
+        })
+    }
+})
+router.get('/monthdata', async (req, res) => {
+    try {
+        const { id } = util.getTokenInfo(req);
+        const { month, year } = req.query;
+        const monthData = await taskDao.findAll({
+            id: id,
+            month: 2,
+            // year: year
+        })
+        res.json({
+            data: monthData,
+            status: "OK"
+        })
+    } catch (error) {
+        res.json({
+            data: "获取月视图失败,请稍后重试",
+            status: "FALSE"
+        })
+    }
+});
 module.exports = router;

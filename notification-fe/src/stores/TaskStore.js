@@ -1,5 +1,5 @@
 import axios from '../util/axios';
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 class TaskStore {
     taskInfo = {}
@@ -8,7 +8,6 @@ class TaskStore {
     totalPage = 0
     currentPage = 1
     pageSize = 6
-
     constructor() {
         makeAutoObservable(this);
     }
@@ -27,7 +26,6 @@ class TaskStore {
 
     async deleteTask() {
         let res = await axios.delete('/api/task/delete', { id: 123 });
-
     }
     /**
      * 加载task数据
@@ -41,7 +39,31 @@ class TaskStore {
                 pageSize: this.pageSize
             }
         });
-        console.log(res);
+        runInAction(() => {
+            this.tasks = res;
+        })
+        console.log("queryResult:", res);
+    }
+
+    /**
+     * 翻页函数
+     * @param {NUmber} e 当前页号 
+     */
+    pageChange(e) {
+        runInAction(() => {
+            this.currentPage = e;
+            this.loadTasks();
+        });
+    }
+
+    /**
+     * 获取task总数
+     */
+    async getTotalNumber() {
+        const number = await axios.get('/api/task/total');
+        runInAction(() => {
+            this.totalPage = Math.ceil(number / this.pageSize);
+        })
     }
 }
 export default TaskStore;

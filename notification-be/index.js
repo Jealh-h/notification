@@ -3,7 +3,9 @@ var bodyParser = require('body-parser');
 const constName = require('./configs/constans');
 const jwt = require('jsonwebtoken');
 const Cookie = require('cookie');
+const { fork } = require('child_process');
 
+exports.taskHandleProcess = fork('childProcess.js');
 
 // 连接数据库
 var mongoose = require('mongoose');

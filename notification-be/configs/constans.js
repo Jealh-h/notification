@@ -10,6 +10,7 @@ module.exports = {
     SERVER_IP: '47.99.199.187',
     REDIS_PORT: 6379,
     REDIS_PASSWORD: 'hhd1620175472',
-    TASK_FINISH: 'finish',
-    TASK_UNDERWAY: 'underway'
+    TASK_FINISH: 'success',
+    TASK_UNDERWAY: 'ongoing',
+    BACK_ERROR: "后端报错"
 }

@@ -19,8 +19,8 @@ class UserStore {
     }
 
     async logout() {
-        let res = await axios.get(`/api/user/logout`);
-        // TODO删除token
+        let res = await axios.get(`/api/user/exit`);
+        window.location.reload();
     }
 
     async getUserinfo() {
@@ -31,7 +31,7 @@ class UserStore {
             })
             Notification.info({
                 title: `你好,${this.userinfo?.name}`,
-                content: "welcomme to the notification",
+                content: "Welcome to the notification",
                 duration: 3,
                 position: "top",
                 icon: <IconEmoji />,

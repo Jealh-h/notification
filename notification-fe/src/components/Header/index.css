@@ -1,7 +1,7 @@
 .header-nav {
   height: 48px;
   line-height: 48px;
-  border-bottom: 1px solid #9f9f9f;
+  box-shadow: 0 0px 3px 0px #bfbfbf;
   margin-bottom: 20px;
   padding: 0 80px;
   vertical-align: middle;
@@ -15,4 +15,6 @@
   font-weight: bolder;
   font-size: 1.5em;
   color: #000;
+  display: flex;
+  align-items: center;
 }

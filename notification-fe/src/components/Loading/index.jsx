@@ -5,7 +5,7 @@ export default function Loading() {
   return (
     <div className="loading-wrapper">
       <Spin size="large"></Spin>
-      loading...
+      <div>loading...</div>
     </div>
   );
 }

@@ -62,10 +62,8 @@ class BaseDAO {
         return new Promise((resolve, reject) => {
             this.Model.find(condition, constraints ? constraints : null, (error, result) => {
                 if (error) {
-                    console.log(`findAll error=>${error}`);
                     reject(error);
                 } else {
-                    console.log(`findAll success`);
                     resolve(result);
                 }
             })

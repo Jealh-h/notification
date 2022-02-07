@@ -181,22 +181,17 @@ class Main extends React.Component {
     );
   };
   changeChooseDate = (identify) => {
-    const month = this.state.currentDate.getMonth() + identify;
-    let year = this.state.currentDate.getFullYear();
+    const { monthDataStore } = this.context.store;
+    const month = monthDataStore.month + identify;
+    let year = monthDataStore.year;
     if (month === 12) {
       year += 1;
     }
     /**
      * 不用考虑月份为负数，年份减一的情况，在 new Date时会自动让年份减一
      */
-    // if (month === -1) {
-    //   year -= 1;
-    //   month = 1
-    // }
     const newDate = new Date(year, month % 12, 1);
-    this.setState({
-      currentDate: newDate,
-    });
+    monthDataStore.changeDate(newDate);
   };
   upDateTaskList = () => {};
   // 渲染task列表
@@ -254,7 +249,7 @@ class Main extends React.Component {
   };
   render() {
     let contextValue = this.context;
-    const { userStore, taskStore } = this.context.store;
+    const { userStore, taskStore, monthDataStore } = this.context.store;
     return (
       <>
         <Header
@@ -339,10 +334,8 @@ class Main extends React.Component {
                         icon={<IconChevronLeft />}
                       ></Button>
                       <Button>
-                        <Text
-                          strong
-                        >{`${this.state.currentDate.getFullYear()}年${
-                          this.state.currentDate.getMonth() + 1
+                        <Text strong>{`${monthDataStore.year}年${
+                          monthDataStore.month + 1
                         }月`}</Text>
                       </Button>
                       <Button
@@ -354,7 +347,8 @@ class Main extends React.Component {
                 >
                   <Calendar
                     mode="month"
-                    displayValue={this.state.currentDate}
+                    markWeekend
+                    displayValue={monthDataStore.currentDate}
                     dateGridRender={this.renderDateGrid}
                   ></Calendar>
                 </Card>

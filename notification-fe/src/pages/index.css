@@ -29,6 +29,9 @@
 .gh-login-entry {
   margin-bottom: 1em;
 }
+.gh-login-entry:hover {
+  cursor: pointer;
+}
 .gh-login-entry > a {
   display: block;
   color: #000;
@@ -44,4 +47,7 @@
 .semi-switch-checked,
 .semi-switch-checked:hover {
   background-color: rgb(26, 25, 25);
+}
+.semi-sidesheet-content {
+  overflow: scroll;
 }

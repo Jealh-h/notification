@@ -26,7 +26,14 @@ async function signIn(userInfoResponse) {
     return userinfo;
 }
 router.get('/gh-login', function (req, res) {
-    res.redirect(github.oauth_url + "?client_id=" + github.client_id + `&scope=${github.scope}` + `&redirect_uri=${github.readirect_uri}`);
+    try {
+        res.redirect(github.oauth_url + "?client_id=" + github.client_id + `&scope=${github.scope}` + `&redirect_uri=${github.readirect_uri}`);
+    } catch (error) {
+        res.json({
+            data: "登录失败，请检查网络",
+            status: "FALSE"
+        })
+    }
 });
 
 // github授权回调 第一次授权的回调
@@ -46,13 +53,13 @@ router.get('/github/oauth/callback', async function (req, res, next) {
             accept: "application/json"
         }
     }).catch((error) => {
-        if (error.request) {
-            console.log(error.request);
-        }
+        console.log('ghToken请求失败');
     })
     if (!tokenResponse || tokenResponse.error) {
         // res.end('请重试');
-        res.redirect(urlConfig.FE_INDEX)
+        // res.redirect(urlConfig.FE_INDEX);
+        console.log(tokenResponse);
+        res.end('token失败')
     } else {
         // 获取github返回的token
         const { access_token, token_type } = tokenResponse["data"];

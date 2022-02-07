@@ -104,8 +104,8 @@ router.get('/monthdata', async (req, res) => {
         const { month, year } = req.query;
         const monthData = await taskDao.findAll({
             id: id,
-            month: 2,
-            // year: year
+            month: month,
+            year: year
         })
         res.json({
             data: monthData,

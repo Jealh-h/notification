@@ -12,10 +12,8 @@ class UserStore {
         makeAutoObservable(this);
     }
     async login() {
-        let res = await axios.get('/api/user/login');
-        if (res.status) {
-            this.userinfo = res.data;
-        }
+        let res = await axios.get('/login/gh-login');
+        console.log(res);
     }
 
     async logout() {

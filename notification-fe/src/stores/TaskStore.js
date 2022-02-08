@@ -24,8 +24,9 @@ class TaskStore {
         }
     }
 
-    async deleteTask() {
-        let res = await axios.delete('/api/task/delete', { id: 123 });
+    async deleteTask(_id) {
+        let res = await axios.delete('/api/task/delete', { data: { _id }, params: { _id } });
+        this.loadTasks();
     }
     /**
      * 加载task数据
@@ -41,6 +42,7 @@ class TaskStore {
         });
         runInAction(() => {
             this.tasks = res;
+            this.isLoading = false;
         })
         console.log("queryResult:", res);
     }
@@ -64,6 +66,11 @@ class TaskStore {
         runInAction(() => {
             this.totalPage = Math.ceil(number / this.pageSize);
         })
+    }
+
+    async test() {
+        const res = await axios.get('/api/task/test');
+        console.log(res);
     }
 }
 export default TaskStore;

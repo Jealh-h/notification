@@ -6,4 +6,4 @@ class TaskDAO extends BaseDAO {
         super(TaskModel);
     }
 }
-module.exports = TaskDAO;
+module.exports = new TaskDAO();

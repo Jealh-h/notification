@@ -25,7 +25,6 @@ class BaseDAO {
                     console.log(`model create error--->${error}`);
                     reject(error);
                 } else {
-                    console.log(`model create success`);
                     resolve(result)
                 }
             })
@@ -83,7 +82,6 @@ class BaseDAO {
                     console.log(`findOne error=>${error}`);
                     reject(error);
                 } else {
-                    console.log(`findOne success`);
                     resolve(result);
                 }
             })
@@ -139,7 +137,7 @@ class BaseDAO {
      */
     remove(condition) {
         return new Promise((resolve, reject) => {
-            this.Model.remove(condition, (error, result) => {
+            this.Model.deleteOne(condition, (error, result) => {
                 if (error) {
                     console.log(`remove error=>${error}`);
                     reject(error);

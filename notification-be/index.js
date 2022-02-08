@@ -3,13 +3,11 @@ var bodyParser = require('body-parser');
 const constName = require('./configs/constans');
 const jwt = require('jsonwebtoken');
 const Cookie = require('cookie');
-const { fork } = require('child_process');
-
-exports.taskHandleProcess = fork('childProcess.js');
+const urlConfig = require('./configs/urlConfig');
 
 // 连接数据库
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://noti_dbma:notification@47.99.199.187/notification');
+mongoose.connect(urlConfig.MONGODB_CONNECTION_URL);
 mongoose.connection.on('open', function () {
     console.log("mongodb connect successfully");
 });
@@ -29,7 +27,7 @@ app.all('*', (req, res, next) => {
         "content-type": "application/json",
         "Access-Control-Allow-Origin": "http://localhost:4000",
         "Access-Control-Allow-Credentials": true,
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
         "Access-Control-Allow-Headers": "Content-type,Origin,X-Auth-Token,X-JSON,Cookies,Cookie,Content-Length",
         "Access-Control-Max-Age": 86400,
     });

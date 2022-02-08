@@ -20,6 +20,8 @@ import {
   Notification,
   Switch,
   List,
+  Popconfirm,
+  Toast,
 } from "@douyinfe/semi-ui";
 import { IllustrationIdle } from "@douyinfe/semi-illustrations";
 import {
@@ -30,6 +32,7 @@ import {
   IconChevronRight,
   IconMoon,
   IconSun,
+  IconDelete,
   IconGithubLogo,
 } from "@douyinfe/semi-icons";
 import Header from "../components/Header/index";
@@ -193,6 +196,10 @@ class Main extends React.Component {
     const newDate = new Date(year, month % 12, 1);
     monthDataStore.changeDate(newDate);
   };
+  deleteTask = (_id) => {
+    const { taskStore } = this.context.store;
+    taskStore.deleteTask(_id);
+  };
   upDateTaskList = () => {};
   // 渲染task列表
   rendTaskList = () => {
@@ -206,7 +213,7 @@ class Main extends React.Component {
             return (
               <Timeline.Item
                 extra={item.descrption}
-                key={index}
+                key={item._id}
                 type={item.status}
                 time={"Deadline：" + time}
               >
@@ -214,6 +221,17 @@ class Main extends React.Component {
                 <div className="time-indicator">
                   {statusMap[item.status].icon}
                   <div className="status-tip">{statusMap[item.status].tip}</div>
+
+                  <Popconfirm
+                    title="确定是否要删除此项？"
+                    content="此修改将不可逆"
+                    onConfirm={(e) => this.deleteTask(item._id)}
+                    onCancel={() => {
+                      Toast.warning("取消删除");
+                    }}
+                  >
+                    <IconDelete style={{ color: "red", cursor: "pointer" }} />
+                  </Popconfirm>
                 </div>
               </Timeline.Item>
             );
@@ -247,6 +265,10 @@ class Main extends React.Component {
       body.setAttribute("theme-mode", "dark");
     }
   };
+  test = () => {
+    const { taskStore } = this.context.store;
+    taskStore.deleteTask();
+  };
   render() {
     let contextValue = this.context;
     const { userStore, taskStore, monthDataStore } = this.context.store;
@@ -254,12 +276,13 @@ class Main extends React.Component {
       <>
         <Header
           title={
-            <Switch
-              onChange={this.changeMode}
-              checkedText={<IconMoon />}
-              uncheckedText={<IconSun style={{ color: "#FBCD2C" }} />}
-              style={{ marginLeft: 5 }}
-            />
+            // <Switch
+            //   onChange={this.changeMode}
+            //   checkedText={<IconMoon />}
+            //   uncheckedText={<IconSun style={{ color: "#FBCD2C" }} />}
+            //   style={{ marginLeft: 5 }}
+            // />
+            <Button onClick={this.test}>测试</Button>
           }
           extral={
             isLogin() ? (

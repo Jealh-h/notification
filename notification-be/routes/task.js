@@ -1,13 +1,12 @@
 const express = require('express');
-const TaskDAO = require('../DAO/task');
+const taskDao = require('../DAO/task');
 var router = express.Router();
-const taskDao = new TaskDAO();
+// const taskDao = new TaskDAO();
 const util = require('../utils/util');
 const redisClient = require('../utils/redis');
 const scheduler = require('node-schedule');
 const emailHelper = require('../utils/email');
 const constProper = require('../configs/constans');
-const taskHandleProcess = require('../index');
 router.get('/querytask', async (req, res) => {
     try {
         const cookieData = util.getTokenInfo(req);
@@ -63,17 +62,19 @@ router.post('/addtask', async (req, res) => {
             //     _id: new ObjectId("61f9422be9c60e0a923adcbe"),
             //     __v: 0
             // }
-            taskHandleProcess.send(JSON.stringify(data));
-            // let result = await taskDao.create(data);
-            // // 设置定时任务
-            // scheduler.scheduleJob(new Date(data.deadline), function (taskinfo) {
-            //     emailHelper.sendNotification(data.email, data);
-            //     taskDao.update({
-            //         _id: taskinfo['_id']
-            //     }, { status: constProper.TASK_FINISH })
-            // }.bind(null, result))
+            let result = await taskDao.create(data);
+            // 设置定时任务
+            scheduler.scheduleJob(new Date(data.deadline), async function (taskinfo) {
+                const updateStatus = taskDao.update({
+                    _id: taskinfo['_id']
+                }, { status: constProper.TASK_FINISH })
+                if (updateStatus?.modifiedCount != 0) {
+                    // 确保任务没有被删除
+                    emailHelper.sendNotification(data.email, data);
+                }
+            }.bind(null, result));
             res.json({
-                data: result,
+                data: "添加成功",
                 status: "OK"
             })
         }
@@ -118,4 +119,29 @@ router.get('/monthdata', async (req, res) => {
         })
     }
 });
+router.delete('/delete', async (req, res) => {
+    try {
+        await taskDao.remove({
+            _id: req.query?._id
+        });
+        res.json({
+            data: "删除成功",
+            status: "OK"
+        })
+    } catch (error) {
+        res.json({
+            data: "删除失败,请稍后重试",
+            status: "FALSE"
+        })
+    }
+})
+router.get('/test', async function (req, res) {
+    let result = await taskDao.update({
+        id: 123
+    }, { status: constProper.TASK_FINISH });
+    res.json({
+        data: result,
+        status: "OK"
+    })
+})
 module.exports = router;

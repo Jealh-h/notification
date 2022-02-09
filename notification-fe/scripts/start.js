@@ -3,9 +3,10 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const cp = require('child_process');
 
+const ENV = process.env.NODE_ENV;
 const app = express();
 const webpackConfig = require('../config/webpack.config.js');
-const config = webpackConfig('development')
+const config = webpackConfig(ENV)
 const complier = webpack(config);
 
 // 告知express使用webpack-dev-middleware,

@@ -4,6 +4,7 @@ const constName = require('./configs/constans');
 const jwt = require('jsonwebtoken');
 const Cookie = require('cookie');
 const urlConfig = require('./configs/urlConfig');
+const path = require('path');
 
 // 连接数据库
 var mongoose = require('mongoose');
@@ -22,6 +23,10 @@ const loginRouter = require('./routes/login');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
 app.all('*', (req, res, next) => {
     res.set({
         "content-type": "application/json",
@@ -70,7 +75,7 @@ app.use('/login', loginRouter);
 // 处理404
 app.use(function (req, res, next) {
     res.set('status', '404');
-    res.end('404');
+    res.render('404')
 })
 app.listen(3003, () => {
     console.log("server is listening on port 3003");

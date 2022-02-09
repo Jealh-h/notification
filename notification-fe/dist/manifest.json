@@ -1,7 +1,6 @@
 {
-  "index.js": "autoindex.bundle.js",
-  "print.js": "autoprint.bundle.js",
-  "ui-preview.jpg": "auto26518992dcc647239f3c.jpg",
-  "favicon.ico": "autofavicon.ico",
-  "index.html": "autoindex.html"
+  "main.js": "./main.05b52d800f9343385852.bundle.js",
+  "537.bundle.js": "./537.87a1c53153ed7ab165db.bundle.js",
+  "621.bundle.js": "./621.29a34ca5eafe5bd3259c.bundle.js",
+  "index.html": "./index.html"
 }

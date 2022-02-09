@@ -8,6 +8,7 @@
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "babel-loader": "^8.2.3",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.5.1",
     "express": "^4.17.1",
     "html-webpack-plugin": "^5.5.0",
@@ -23,8 +24,8 @@
   },
   "scripts": {
     "test": "echo 'Error no script to run' && exit 1",
-    "build": "node scripts/build.js",
-    "start": "node scripts/start.js",
+    "build": "cross-env NODE_ENV=production node scripts/build.js",
+    "start": "cross-env NODE_ENV=development node scripts/start.js",
     "watch": "node scripts/watch.js"
   },
   "dependencies": {

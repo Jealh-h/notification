@@ -276,13 +276,13 @@ class Main extends React.Component {
       <>
         <Header
           title={
-            // <Switch
-            //   onChange={this.changeMode}
-            //   checkedText={<IconMoon />}
-            //   uncheckedText={<IconSun style={{ color: "#FBCD2C" }} />}
-            //   style={{ marginLeft: 5 }}
-            // />
-            <Button onClick={this.test}>测试</Button>
+            <Switch
+              onChange={this.changeMode}
+              checkedText={<IconMoon />}
+              uncheckedText={<IconSun style={{ color: "#FBCD2C" }} />}
+              style={{ marginLeft: 5 }}
+            />
+            // <Button onClick={this.test}>测试</Button>
           }
           extral={
             isLogin() ? (

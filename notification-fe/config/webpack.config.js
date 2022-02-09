@@ -12,12 +12,19 @@ module.exports = function (webpackEnv) {
             entryPath,
             'webpack-hot-middleware/client?noInfo=true&reload=true'
         ],
+        externals: {
+            'react': "React"
+        },
+        performance: {
+            hints: false
+        },
         output: {
             // filename: 'bundle.js',
             filename: '[name].[contenthash].bundle.js',
             path: path.resolve(__dirname, '../dist'),
             clean: true, //清理原来构建的dist目录
-            publicPath: '/'
+            publicPath: './',
+            assetModuleFilename: "assets"
         },
         plugins: [
             new HtmlWebpackPlugin({
@@ -36,7 +43,10 @@ module.exports = function (webpackEnv) {
                     use: [
                         'style-loader',
                         'css-loader',
-                    ]
+                    ],
+                    generator: {
+                        outputPath: "assets/css"
+                    }
                 },
                 {
                     test: /\.less$/i,
@@ -50,6 +60,9 @@ module.exports = function (webpackEnv) {
                 {
                     test: /\.(png|svg|jpg|jpeg|gif)$/i,
                     type: 'asset/resource',
+                    generator: {
+                        outputPath: 'cdn-assets/',
+                    },
                 },
                 // 字体
                 {

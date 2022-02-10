@@ -41,6 +41,7 @@ import ModalContext from "../layout/context";
 import MyEmpty from "../components/Empty";
 import CoButton from "../components/Button/index";
 import { isLogin } from "../util/util";
+import configs from "../config/configs";
 
 import "./index.css";
 import "./index.less";
@@ -108,7 +109,8 @@ class Main extends React.Component {
   // 处理更新/添加
   componentDidUpdate(preProps, preState) {
     if (this.context.isUpdate) {
-      console.log("main更新:", this.State, preState);
+      const { taskStore } = this.context.store;
+      taskStore.loadTasks();
       this.context.toggleUpdateState();
     }
   }
@@ -247,13 +249,11 @@ class Main extends React.Component {
     );
   };
   addTodo = () => {
-    // TODO
     // 判断是否登录
-    const id = localStorage.getItem("id");
-    // if (!id) {
-    //   Notification.warning({ content: "请先登录" });
-    //   return;
-    // }
+    if (!isLogin()) {
+      Notification.warning({ content: "请先登录" });
+      return;
+    }
     this.context.toggleVisible();
   };
   // 日夜模式转换
@@ -310,7 +310,7 @@ class Main extends React.Component {
               <CoButton
                 type="primary"
                 size="middle"
-                style={{ float: "right", margin: "5px 40px 0 0" }}
+                style={{ float: "right" }}
                 onClick={contextValue.toggleLoginVisible}
               >
                 登录
@@ -323,7 +323,7 @@ class Main extends React.Component {
             <Row>
               <Col className="task-list" lg={8} sm={24}>
                 {isLogin() ? (
-                  taskStore.tasks.length ? (
+                  taskStore.tasks?.length ? (
                     this.rendTaskList()
                   ) : (
                     <>
@@ -392,6 +392,7 @@ class Main extends React.Component {
         <Modal
           visible={contextValue.visible}
           onCancel={contextValue.toggleVisible}
+          size={window.innerWidth < 580 ? "full-width" : "small"}
           title={
             <div>
               添加提醒
@@ -399,7 +400,6 @@ class Main extends React.Component {
             </div>
           }
           footer={null}
-          size="small"
         >
           <NoteEditor upDate={this.upDateTaskList} />
         </Modal>
@@ -407,6 +407,7 @@ class Main extends React.Component {
         <Modal
           header={null}
           footer={null}
+          size={window.innerWidth < 580 ? "full-width" : "small"}
           onCancel={contextValue.toggleLoginVisible}
           visible={contextValue.loginVisble}
         >
@@ -418,7 +419,7 @@ class Main extends React.Component {
             style={{ textAlign: "center" }}
           >
             <div className="gh-login-entry">
-              <a href="http://localhost:3003/login/gh-login">
+              <a href={`${configs.api}/login/gh-login`}>
                 <IconGithubLogo size="extra-large" />
               </a>
             </div>

@@ -22,7 +22,7 @@ const webpackConfig = require('../config/webpack.config');
 const complier = webpack(webpackConfig('production'));
 complier.run((err, stats) => {
     if (err) {
-        console.error(err.stack || err);
+        console.error(err);
         if (err.details) {
             console.error(err.details);
         }

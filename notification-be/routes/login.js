@@ -72,6 +72,7 @@ router.get('/github/oauth/callback', async function (req, res, next) {
         }).catch((error) => {
             if (error.request) {
                 console.log(error.request);
+                console.log('----error request----', userInfoResponse);
             }
         })
         let userInfo = await signIn(userInfoResponse);

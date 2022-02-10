@@ -13,7 +13,7 @@ const complier = webpack(config);
 // 并设置webpack.config配置文件作为基础配置
 app.use(
     webpackDevMiddleware(complier, {
-        publicPath: config.output.publicPath,
+        publicPath: "/",
     })
 )
 // 热模块替换

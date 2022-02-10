@@ -143,13 +143,13 @@ class NoteEditor extends React.Component {
               </Col>
             </Row>
             <Row style={{ margin: "0 0 10px" }}>
-              <Col span={18}>
+              <Col span={16} xs={12}>
                 <Form.Input
                   field="verifyCode"
                   rules={[{ required: true }]}
                 ></Form.Input>
               </Col>
-              <Col span={4} offset={2}>
+              <Col span={6} offset={2}>
                 <Button
                   disabled={verifyStore.disabled}
                   onClick={this.getVerifyCode}
@@ -171,6 +171,14 @@ class NoteEditor extends React.Component {
                     }
                   >
                     <Button
+                      // type={
+                      //   this.state.expressionVisible ? "warning" : "primary"
+                      // }
+                      style={{
+                        backgroundColor: this.state.expressionVisible
+                          ? "#FFAE43"
+                          : "",
+                      }}
                       onClick={this.toggleExpressionVisible}
                       icon={<IconEmoji style={iconColor} />}
                     />

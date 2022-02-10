@@ -1,6 +1,9 @@
 .app {
   color: #f5db00;
 }
+.semi-row {
+  width: 100%;
+}
 body {
   /* background: url(./assets/ui-preview.jpg); */
   /* --semi-color-primary: #f5db00; */

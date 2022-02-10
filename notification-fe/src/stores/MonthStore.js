@@ -18,7 +18,7 @@ export default class MonthDataStore {
         })
         runInAction(() => {
             this.monthData = {};
-            res.forEach((item, index) => {
+            res?.forEach((item, index) => {
                 const date = `${item.month}月${item.date}日`
                 if (!this.monthData[date]) {
                     this.monthData[date] = [];

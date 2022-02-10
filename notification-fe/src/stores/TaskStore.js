@@ -19,7 +19,7 @@ class TaskStore {
             let res = await axios.post('/api/task/addtask', data);
             return true;
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return false;
         }
     }
@@ -44,7 +44,6 @@ class TaskStore {
             this.tasks = res;
             this.isLoading = false;
         })
-        console.log("queryResult:", res);
     }
 
     /**
@@ -70,7 +69,6 @@ class TaskStore {
 
     async test() {
         const res = await axios.get('/api/task/test');
-        console.log(res);
     }
 }
 export default TaskStore;

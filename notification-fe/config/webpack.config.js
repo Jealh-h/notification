@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const webpack = require('webpack');
 
@@ -12,9 +13,12 @@ module.exports = function (webpackEnv) {
             entryPath,
             'webpack-hot-middleware/client?noInfo=true&reload=true'
         ],
-        externals: {
-            'react': "React"
-        },
+        // externals: {
+        //     "react": "React",
+        //     // "@douyinfe/semi-icons": "commonjs2 @douyinfe/semi-icons",
+        //     // "@douyinfe/semi-illustrations": "commonjs2 @douyinfe/semi-illustrations",
+        //     // "@douyinfe/semi-ui": "commonjs2 @douyinfe/semi-ui"
+        // },
         performance: {
             hints: false
         },
@@ -30,8 +34,8 @@ module.exports = function (webpackEnv) {
             new HtmlWebpackPlugin({
                 title: "development",
                 template: path.resolve(__dirname, '../public/index.html'),
-                // favicon: path.resolve(__dirname, '../public/favicon.ico')
             }),
+            new MiniCssExtractPlugin(),
             new WebpackManifestPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoEmitOnErrorsPlugin()
@@ -41,12 +45,10 @@ module.exports = function (webpackEnv) {
                 {
                     test: /\.css$/,
                     use: [
-                        'style-loader',
+                        MiniCssExtractPlugin.loader,
+                        // 'style-loader',
                         'css-loader',
                     ],
-                    generator: {
-                        outputPath: "assets/css"
-                    }
                 },
                 {
                     test: /\.less$/i,
@@ -89,7 +91,8 @@ module.exports = function (webpackEnv) {
         devtool: isDev ? 'inline-source-map' : false,
         devServer: {
             port: 4000,
-            open: true
+            open: true,
+            contentBase: __dirname + '/dist'
         }
     }
 }

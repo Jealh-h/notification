@@ -1,5 +1,4 @@
 import React from "react";
-import { Typography } from "@douyinfe/semi-ui";
 import "./index.css";
 
 function FixedNumber(num, digits) {
@@ -19,14 +18,15 @@ export default function ExpressionPanel(props) {
   let rows = [];
   let expressions = [];
   const { onClick } = props;
+  const rowCount = window.innerWidth <= 575 ? 5 : 10;
   // 生成表情Unicode
   for (let i = low; i < high; i++) {
     expressions.push(String.fromCodePoint(`0x1f${FixedNumber(i, 3)}`));
   }
   function renderExpression() {
-    let ten_elem = [];
+    let row_elem = [];
     for (let i = 0; i < expressions.length; i++) {
-      ten_elem.push(
+      row_elem.push(
         <span
           key={expressions[i]}
           onClick={() => {
@@ -40,13 +40,13 @@ export default function ExpressionPanel(props) {
           {expressions[i]}
         </span>
       );
-      if (ten_elem.length == 10) {
+      if (row_elem.length == rowCount) {
         rows.push(
-          <div key={Math.ceil(i / 10)} className="expressions-row">
-            {ten_elem.map((item, index) => item)}
+          <div key={Math.ceil(i / rowCount)} className="expressions-row">
+            {row_elem.map((item, index) => item)}
           </div>
         );
-        ten_elem = [];
+        row_elem = [];
       }
     }
     return rows.map((item) => item);

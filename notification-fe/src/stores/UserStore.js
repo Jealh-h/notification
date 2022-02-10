@@ -13,7 +13,6 @@ class UserStore {
     }
     async login() {
         let res = await axios.get('/login/gh-login');
-        console.log(res);
     }
 
     async logout() {
@@ -35,7 +34,7 @@ class UserStore {
                 icon: <IconEmoji />,
             });
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 }

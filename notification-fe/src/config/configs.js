@@ -1,5 +1,7 @@
+const ENV = process.env.NODE_ENV;
+const api = ENV === 'development' ? "http://localhost:3003" : "http://dev.jealh.xyz"
 export default {
-    api: "http://localhost:3003",
+    api: api,
     SESSION_NAME: '--session-id--',
     MAIL_COOLDOWN: 60
 }

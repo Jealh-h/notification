@@ -23,7 +23,7 @@ instance.interceptors.response.use((axiosResponse) => {
 }, (error) => {
     console.log(error);
     Notification.error({
-        content: "后端报错",
+        content: "服务端错误",
         position: "top"
     })
 });

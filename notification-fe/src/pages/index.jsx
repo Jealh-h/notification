@@ -219,9 +219,9 @@ class Main extends React.Component {
                 type={item.status}
                 time={"Deadline：" + time}
               >
-                {item.title}
+                <div className="theme-text">{item.title}</div>
                 <div className="time-indicator">
-                  {statusMap[item.status].icon}
+                  {statusMap[item.status]?.icon}
                   <div className="status-tip">{statusMap[item.status].tip}</div>
 
                   <Popconfirm

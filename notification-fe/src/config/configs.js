@@ -3,5 +3,7 @@ const api = ENV === 'development' ? "http://localhost:3003" : "http://dev.jealh.
 export default {
     api: api,
     SESSION_NAME: '--session-id--',
-    MAIL_COOLDOWN: 60
+    MAIL_COOLDOWN: 60,
+    TASK_FINISH: 'success',
+    TASK_ONGOING: 'ongoing'
 }

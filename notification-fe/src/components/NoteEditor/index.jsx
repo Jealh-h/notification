@@ -14,6 +14,7 @@ import ExpressionPanel from "../Expressions";
 import ModalContext from "../../layout/context";
 import "./index.css";
 import PropTypes from "prop-types";
+import configs from "../../config/configs";
 class NoteEditor extends React.Component {
   static contextType = ModalContext;
   constructor(props) {
@@ -47,8 +48,6 @@ class NoteEditor extends React.Component {
     const { userStore, taskStore, verifyStore } = this.context.store;
     const form = this.formRef.current;
     const { values, errors } = form.formApi.getFormState();
-    console.log("表单数据:", values);
-    console.log("表单错误:", Object.values(errors));
     if (!Object.values(values).length) {
       Notification.error({ content: "请填写表单类容" });
       return;
@@ -59,7 +58,7 @@ class NoteEditor extends React.Component {
       // TODO
       // 先验证验证码是否正确
       values.description = values.description ? values.description : "";
-      values.status = "underway";
+      values.status = configs.TASK_ONGOING;
       values.uuid = verifyStore.uuid;
       let verifyStatus = await taskStore.addTask(values);
       if (verifyStatus) {

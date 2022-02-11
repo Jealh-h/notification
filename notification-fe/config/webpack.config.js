@@ -11,14 +11,14 @@ module.exports = function (webpackEnv) {
         // entry: './src/index.js',
         entry: [
             entryPath,
-            'webpack-hot-middleware/client?noInfo=true&reload=true'
+            // 'webpack-hot-middleware/client?noInfo=true&reload=true'
         ],
-        // externals: {
-        //     "react": "React",
-        //     // "@douyinfe/semi-icons": "commonjs2 @douyinfe/semi-icons",
-        //     // "@douyinfe/semi-illustrations": "commonjs2 @douyinfe/semi-illustrations",
-        //     // "@douyinfe/semi-ui": "commonjs2 @douyinfe/semi-ui"
-        // },
+        externals: {
+            "react": "React",
+            // "@douyinfe/semi-icons": "commonjs2 @douyinfe/semi-icons",
+            // "@douyinfe/semi-illustrations": "commonjs2 @douyinfe/semi-illustrations",
+            // "@douyinfe/semi-ui": "commonjs2 @douyinfe/semi-ui"
+        },
         performance: {
             hints: false
         },

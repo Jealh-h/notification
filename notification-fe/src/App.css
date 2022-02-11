@@ -8,7 +8,8 @@ body {
 body[theme-mode] {
   background-color: #16161a;
 }
-body[theme-mode] .status-tip {
+body[theme-mode] .status-tip,
+.theme-text {
   color: aliceblue;
 }
 *::-webkit-scrollbar {

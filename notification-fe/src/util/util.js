@@ -5,8 +5,11 @@ export function validateEmailRule(email) {
 }
 
 export function isLogin() {
+    // let cookie = document.cookie || "";
+    // let reg = /(.*)=.*/i;
+    // let tokenReg = /(ACCESS_TOKEN)/g;
+    // return cookie && tokenReg.test(reg.exec(cookie)[1]);
     let cookie = document.cookie || "";
-    let reg = /(.*)=.*/i;
-    let tokenReg = /(ACCESS_TOKEN)/g;
-    return cookie && tokenReg.test(reg.exec(cookie)[1]);
+    let reg = /USER_ID=(.*)/;
+    return reg.exec(cookie);
 }

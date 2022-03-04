@@ -848,6 +848,14 @@
   "resolved" "https://registry.npm.taobao.org/commondir/download/commondir-1.0.1.tgz"
   "version" "1.0.1"
 
+"compression-webpack-plugin@^9.2.0":
+  "integrity" "sha512-R/Oi+2+UHotGfu72fJiRoVpuRifZT0tTC6UqFD/DUo+mv8dbOow9rVOuTvDv5nPPm3GZhHL/fKkwxwIHnJ8Nyw=="
+  "resolved" "https://registry.npmmirror.com/compression-webpack-plugin/-/compression-webpack-plugin-9.2.0.tgz"
+  "version" "9.2.0"
+  dependencies:
+    "schema-utils" "^4.0.0"
+    "serialize-javascript" "^6.0.0"
+
 "compute-scroll-into-view@^1.0.17":
   "integrity" "sha1-aojxis2dQunPS6pr7H4FImB6t6s="
   "resolved" "https://registry.npm.taobao.org/compute-scroll-into-view/download/compute-scroll-into-view-1.0.17.tgz?cache=0&sync_timestamp=1614042424875&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcompute-scroll-into-view%2Fdownload%2Fcompute-scroll-into-view-1.0.17.tgz"

@@ -23,7 +23,8 @@ let port = config.devServer.port ?? 3000;
 
 try {
     app.listen(port, function () {
-        console.log("The aplication listening on port 3000,\x1B[34m%s\x1B[0m", "http://localhost:3000");
+        console.log("The aplication listening on port", port)
+        console.log("\x1B[34m%s\x1B[0m", "http://localhost:" + port);
         if (config.devServer.open) {
             openBrowser(`http://localhost:${port}`);
         }

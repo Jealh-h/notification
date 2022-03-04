@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const ComporessionPlugin = require('compression-webpack-plugin');
 const webpack = require('webpack');
 
 const entryPath = path.resolve(__dirname, '../src/index.js');
@@ -15,6 +16,7 @@ module.exports = function (webpackEnv) {
         ],
         externals: {
             "react": "React",
+            "react-dom": "ReactDOM"
             // "@douyinfe/semi-icons": "commonjs2 @douyinfe/semi-icons",
             // "@douyinfe/semi-illustrations": "commonjs2 @douyinfe/semi-illustrations",
             // "@douyinfe/semi-ui": "commonjs2 @douyinfe/semi-ui"
@@ -38,7 +40,14 @@ module.exports = function (webpackEnv) {
             new MiniCssExtractPlugin(),
             new WebpackManifestPlugin(),
             new webpack.HotModuleReplacementPlugin(),
-            new webpack.NoEmitOnErrorsPlugin()
+            new webpack.NoEmitOnErrorsPlugin(),
+            new ComporessionPlugin({
+                filename: '[file].gz[query]',
+                algorithm: 'gzip',
+                test: new RegExp('\\.(js|css)$'),
+                threshold: 512,
+                minRatio: 0.8
+            })
         ],
         module: {
             rules: [
@@ -93,6 +102,17 @@ module.exports = function (webpackEnv) {
             port: 4000,
             open: true,
             contentBase: __dirname + '/dist'
-        }
+        },
+        optimization: {
+            splitChunks: {
+                cacheGroups: {
+                    douyinfe: {
+                        test: /[\\/]node_modules[\\/]@douyinfe[\\/]/,
+                        name: 'douyinfe',
+                        chunks: 'all',
+                    },
+                },
+            },
+        },
     }
 }

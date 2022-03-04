@@ -7,6 +7,8 @@ const redisClient = require('../utils/redis');
 const scheduler = require('node-schedule');
 const emailHelper = require('../utils/email');
 const constProper = require('../configs/constans');
+const fork = require('child_process').fork;
+const pushProcess = fork('childprocess.js');
 router.get('/querytask', async (req, res) => {
     try {
         const cookieData = util.getTokenInfo(req);
@@ -62,17 +64,18 @@ router.post('/addtask', async (req, res) => {
             //     _id: new ObjectId("61f9422be9c60e0a923adcbe"),
             //     __v: 0
             // }
-            let result = await taskDao.create(data);
-            // 设置定时任务
-            scheduler.scheduleJob(new Date(data.deadline), async function (taskinfo) {
-                const updateStatus = taskDao.update({
-                    _id: taskinfo['_id']
-                }, { status: constProper.TASK_FINISH })
-                if (updateStatus?.modifiedCount != 0) {
-                    // 确保任务没有被删除
-                    emailHelper.sendNotification(data.email, data);
-                }
-            }.bind(null, result));
+            // let result = await taskDao.create(data);
+            // // 设置定时任务
+            // scheduler.scheduleJob(new Date(data.deadline), async function (taskinfo) {
+            //     const updateStatus = taskDao.update({
+            //         _id: taskinfo['_id']
+            //     }, { status: constProper.TASK_FINISH })
+            //     if (updateStatus?.modifiedCount != 0) {
+            //         // 确保任务没有被删除
+            //         emailHelper.sendNotification(data.email, data);
+            //     }
+            // }.bind(null, result));
+            pushProcess.send(data);
             res.json({
                 data: "添加成功",
                 status: "OK"

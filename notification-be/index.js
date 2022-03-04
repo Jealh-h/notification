@@ -6,6 +6,7 @@ const Cookie = require('cookie');
 const urlConfig = require('./configs/urlConfig');
 const path = require('path');
 
+
 // 连接数据库
 var mongoose = require('mongoose');
 mongoose.connect(urlConfig.MONGODB_CONNECTION_URL);
@@ -47,16 +48,15 @@ app.all('*', (req, res, next) => {
 app.all('/api/*', (req, res, next) => {
     // 对api路径下的接口进行token验证
     let cookie = req.headers.cookie;
-    cookie = Cookie.parse(cookie);
     try {
+        cookie = Cookie.parse(cookie);
         const token = cookie[constName.ACCESS_TOKEM].split(' ')[1];
         const data = jwt.verify(token, constName.JWT_SECRET);
         next();
     } catch (error) {
         // token出错，验证失败
-        console.log(error);
         res.json({
-            data: "请重新登录",
+            data: "授权出错",
             status: "FALSE"
         })
     }

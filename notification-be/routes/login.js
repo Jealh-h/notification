@@ -5,9 +5,9 @@ const urlConfig = require('../configs/urlConfig');
 const userDao = new UserDAO();
 const github = require('../configs/OAuth-github');
 const constName = require('../configs/constans');
-const axios = require('axios');
+const axios = require('axios').default;
 const utils = require('../utils/util');
-
+console.log(github.readirect_uri);
 // github登录时走一遍注册流程
 async function signIn(userInfoResponse) {
     // 查看数据库，如果没有则创建该用户的信息
@@ -49,11 +49,12 @@ router.get('/github/oauth/callback', async function (req, res, next) {
         method: "post",
         url: "https://github.com/login/oauth/access_token",
         data: param,
+        timeout: 12000,
         headers: {
             accept: "application/json"
         }
     }).catch((error) => {
-        console.log('ghToken请求失败');
+        return null;
     })
     if (!tokenResponse || tokenResponse.error) {
         // res.end('请重试');
@@ -77,8 +78,8 @@ router.get('/github/oauth/callback', async function (req, res, next) {
         })
         let userInfo = await signIn(userInfoResponse);
         // 设置cookie其中包含用户信息
-        res.cookie(constName.USER_ID, userInfoResponse["data"]["id"], { expires: new Date(Date.now() + 7 * 24 * 3600000), httpOnly: true })
-            .cookie(constName.ACCESS_TOKEM, "Bearer " + utils.getToken(userInfo), { expires: new Date(Date.now() + 7 * 24 * 3600000) })
+        res.cookie(constName.USER_ID, userInfoResponse["data"]["id"], { expires: new Date(Date.now() + 7 * 24 * 3600000) })
+            .cookie(constName.ACCESS_TOKEM, "Bearer " + utils.getToken(userInfo), { expires: new Date(Date.now() + 7 * 24 * 3600000), httpOnly: true })
         res.status(200);
         res.redirect(urlConfig.FE_INDEX);
     }

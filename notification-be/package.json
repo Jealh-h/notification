@@ -5,7 +5,7 @@
   "author": "Jealh",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "set NODE_ENV='DEV' && nodemon index.js "
   },
   "dependencies": {
     "body-parser": "^1.19.1",

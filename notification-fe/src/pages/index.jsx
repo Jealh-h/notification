@@ -196,7 +196,9 @@ class Main extends React.Component {
      * 不用考虑月份为负数，年份减一的情况，在 new Date时会自动让年份减一
      */
     const newDate = new Date(year, month % 12, 1);
-    monthDataStore.changeDate(newDate);
+    if (isLogin()) {
+      monthDataStore.changeDate(newDate);
+    }
   };
   deleteTask = (_id) => {
     const { taskStore } = this.context.store;

@@ -14,7 +14,7 @@ body[theme-mode] {
 body[theme-mode="dark"] .status-tip {
   color: aliceblue;
 }
-body[theme-mode="dark"] .them-text {
+body[theme-mode="dark"] .theme-text {
   color: aliceblue;
 }
 *::-webkit-scrollbar {

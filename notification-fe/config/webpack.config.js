@@ -37,7 +37,9 @@ module.exports = function (webpackEnv) {
                 title: "development",
                 template: path.resolve(__dirname, '../public/index.html'),
             }),
-            new MiniCssExtractPlugin(),
+            new MiniCssExtractPlugin({
+                filename: '[name].[contenthash].css'
+            }),
             new WebpackManifestPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoEmitOnErrorsPlugin(),

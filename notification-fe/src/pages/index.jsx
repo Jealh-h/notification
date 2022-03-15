@@ -165,10 +165,9 @@ class Main extends React.Component {
         renderItem={(item) => (
           <List.Item
             main={
-              <div>
+              <div className="theme-text">
                 <h4
                   style={{
-                    color: "var(--semi-color-text-0)",
                     fontWeight: "bolder",
                   }}
                 >

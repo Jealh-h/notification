@@ -58,8 +58,8 @@ router.get('/github/oauth/callback', async function (req, res, next) {
     })
     if (!tokenResponse || tokenResponse.error) {
         // res.end('请重试');
-        // res.redirect(urlConfig.FE_INDEX);
-        res.render('netError', { title: "Network Error" })
+        res.redirect(urlConfig.FE_INDEX);
+        // res.render('netError', { title: "Network Error" })
     } else {
         // 获取github返回的token
         const { access_token, token_type } = tokenResponse["data"];

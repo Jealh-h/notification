@@ -18,6 +18,10 @@ instance.interceptors.response.use((axiosResponse) => {
     if (data.status === 'OK') {
         return data.data;
     } else {
+        Notification.error({
+            data: data.data,
+            position: top
+        })
         throw (data.data);
     }
 }, (error) => {

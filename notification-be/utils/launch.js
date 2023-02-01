@@ -5,7 +5,7 @@ const emailHelper = require('./email');
 /**
  * 重启程序时需要处理完过期的
  */
-export function launch() {
+function launch() {
   taskDao.findAll({
     status: constProper.TASK_UNDERWAY
   }).then(res => {
@@ -24,4 +24,8 @@ export function launch() {
       }
     })
   })
+}
+
+module.exports = {
+  launch
 }

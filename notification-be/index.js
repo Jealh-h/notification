@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const Cookie = require('cookie');
 const urlConfig = require('./configs/urlConfig');
 const path = require('path');
+const { launch } = require('./utils/launch')
 
 
 // 连接数据库
@@ -12,6 +13,7 @@ var mongoose = require('mongoose');
 mongoose.connect(urlConfig.MONGODB_CONNECTION_URL);
 mongoose.connection.on('open', function () {
     console.log("mongodb connect successfully");
+    launch?.()
 });
 mongoose.connection.on('error', function () {
     console.log("mongodb connect fail");

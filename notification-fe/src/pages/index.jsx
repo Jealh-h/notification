@@ -207,6 +207,7 @@ class Main extends React.Component {
   // 渲染task列表
   rendTaskList = () => {
     const { taskStore } = this.context.store;
+    console.log(taskStore);
     return (
       <>
         <Title heading={3}>当前需要完成的事情</Title>
@@ -241,8 +242,9 @@ class Main extends React.Component {
           })}
         </Timeline>
         <Pagination
-          total={taskStore.totalPage}
+          total={taskStore.total}
           size="small"
+          pageSize={taskStore.pageSize}
           onPageChange={(e) => taskStore.pageChange(e)}
           hoverShowPageSelect
         ></Pagination>

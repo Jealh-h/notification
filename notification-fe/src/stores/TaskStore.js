@@ -8,6 +8,7 @@ class TaskStore {
     totalPage = 0
     currentPage = 1
     pageSize = 6
+    total = 0
     constructor() {
         makeAutoObservable(this);
     }
@@ -61,9 +62,10 @@ class TaskStore {
      * 获取task总数
      */
     async getTotalNumber() {
-        const number = await axios.get('/api/task/total');
+        const totalCount = await axios.get('/api/task/total');
         runInAction(() => {
-            this.totalPage = Math.ceil(number / this.pageSize);
+            this.totalPage = Math.ceil(totalCount / this.pageSize);
+            this.total = totalCount;
         })
     }
 

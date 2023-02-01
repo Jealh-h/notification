@@ -43,8 +43,8 @@ async function sendNotification(userMailAddress, taskinfo) {
         "
       >
         <span>待办描述信息如下:</span>
-        <h2>${taskinfo.title}</h2>
-        <p style="font-weight: 800; font-size: large">${taskinfo.description || '无'}</p>
+        <h2>${taskinfo?.title || '五'}</h2>
+        <p style="font-weight: 800; font-size: large">${taskinfo?.description || '无'}</p>
       </section>
         `,
     }

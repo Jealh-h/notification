@@ -8,7 +8,8 @@ const TaskInfoSchema = new mongoose.Schema({
     "status": String,
     "year": Number,
     "month": Number,
-    "date": Number
+    "date": Number,
+    "timeStamp": Number
 })
 // 在连接的数据库中创建task表
 var TaskModoel = mongoose.model('task', TaskInfoSchema);

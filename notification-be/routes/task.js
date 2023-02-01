@@ -39,6 +39,7 @@ router.post('/addtask', async (req, res) => {
         data.year = new Date(data.deadline).getFullYear();
         data.month = new Date(data.deadline).getMonth();
         data.date = new Date(data.deadline).getDate();
+        data.timeStamp = +new Date(data.deadline)
         delete data?.uuid;
         delete data?.verifyCode;
         let verifyResult = await redisClient.get(uuid);

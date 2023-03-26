@@ -7,8 +7,7 @@ const redisClient = require('../utils/redis');
 const scheduler = require('node-schedule');
 const emailHelper = require('../utils/email');
 const constProper = require('../configs/constans');
-const fork = require('child_process').fork;
-const pushProcess = fork('childprocess.js');
+const pushProcess = require('../utils/schedulerProcess.js');
 router.get('/querytask', async (req, res) => {
     try {
         const cookieData = util.getTokenInfo(req);

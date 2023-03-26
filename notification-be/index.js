@@ -33,7 +33,7 @@ app.set('view engine', 'pug');
 app.all('*', (req, res, next) => {
     res.set({
         "content-type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:4000",
+        "Access-Control-Allow-Origin": "http://dev.jealh.xyz/",
         "Access-Control-Allow-Credentials": true,
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
         "Access-Control-Allow-Headers": "Content-type,Origin,X-Auth-Token,X-JSON,Cookies,Cookie,Content-Length",
